@@ -1,0 +1,114 @@
+.el-input {
+    .el-input__wrapper {
+        border-radius: 0;
+        background-color: #102c6d;
+        box-shadow: none;
+        color: white
+    }
+}
+
+.el-select {
+    .el-input__wrapper {
+        border-radius: 0;
+        background-color: #165DFF;
+        box-shadow: none;
+        color: white;
+        .el-icon {
+            color: white;
+        }
+    }
+}
+
+.el-table {
+    --el-table-bg-color: rgba(22, 93, 255, 0.3);
+    --el-table-border-color: none;
+    color: white;
+    .el-table__empty-block {
+        background: rgba(22, 93, 255, 0.3);
+        .el-table__empty-text {
+            color: white;
+        }
+    }
+}
+
+.el-loading-mask {
+    background-color: rgb(3 3 37 / 57%);
+}
+
+.el-notification {
+    background: #09037eb3;
+    color: white;
+    .el-notification__title {
+        color: white;
+    }
+}
+
+.table {
+    margin-top: 2rem;
+    .header {
+        background: #0b1c43;
+        height: 1.75rem;
+        flex-shrink: 0;
+        text-align: center;
+    }
+    .cell {
+        text-align: center;
+        padding-top: 0.075rem;
+        padding-bottom: 0.075rem;
+        .btn {
+            color: #38FFFF;
+            text-align: center;
+            font-family: Alibaba PuHuiTi 2.0;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
+    .el-table__body-wrapper {
+        --el-table-bg-color: rgba(22, 93, 255, 0.3)
+    }
+    .row:nth-child(odd) {
+        background: rgba(11, 50, 141, 0.2);
+        --el-table-row-hover-bg-color: #1e93bfbd
+    }
+    .row:nth-child(even) {
+        background: rgba(7, 27, 71, 0.3);
+        --el-table-row-hover-bg-color: #1e93bfbd
+    }
+    .pagination {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        align-items: center;
+        color: #FFF;
+        text-align: center;
+        font-family: Alibaba PuHuiTi 2.0;
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        .el-pagination {
+            margin-left: 1.5rem;
+            button {
+                background: #172E6B;
+                color: #fff;
+                border-radius: 0;
+            }
+            button:disabled {
+                background: #29365b;
+                color: #ffffff88;
+            }
+            .number {
+                background: #172E6B;
+                color: #fff;
+                border-radius: 0;
+            }
+            .is-active {
+                background-color: rgba(22, 93, 255, 1);
+                color: #fff;
+            }
+        }
+    }
+}
