@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, VNode, createVNode } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 import { Search, Fold, Expand, Warning } from '@element-plus/icons-vue'
 import { fabric } from 'fabric'
 import line from '@/assets/line.svg'
 import useArrowHeadRect from '@/utils/useArrowHeadRect.ts'
 import useFabricWheelAndMove from '@/utils/useFabricWheelAndMove.ts'
 import useMaking from '@/utils/useMaking.ts'
-import { ElNotification, ElButton } from 'element-plus'
+import useModel from '@/utils/useModel.ts'
 import { useRoute } from 'vue-router'
+import { array } from '@/utils/testData.json'
 
 const route = useRoute()
-const { type, id } = route.query
+const type = route.query.type
 
 // 模糊查询值
 const searchValue = ref<string>('')
@@ -24,6 +25,89 @@ const light = ref<number>(1)
 const gzList = ref<Array<any>>([])
 
 const canvas = ref<any>()/*  */
+
+// 子流程
+const isModel = ref<Boolean>(false)
+const modelCanvas = ref<any>()
+// 选中的模块
+let choose: any
+
+const handleModel = (e: any, item: any) => {
+    choose = {...e, item}
+    isModel.value = !isModel.value
+}
+
+watch(isModel, (val) => {
+    if(val) {
+        nextTick(() => {
+            const model = modelCanvas.value as HTMLCanvasElement;
+
+            const fabs = new fabric.Canvas(model, {
+                width: document.getElementsByClassName('model')[0].clientWidth - 2,
+                height: document.getElementsByClassName('model')[0].clientHeight - 2,
+                fireRightClick: true, // 启用右键，button的数字为3
+                imageSmoothingEnabled: false,
+                selection: false,
+                backgroundColor: "#1d3b51",
+                // top: 20
+            });
+            useFabricWheelAndMove(fabs)
+            fabs.renderAll()
+            if(type === '1') {
+                const initLiu = (arr: any, x: number, y: number) => {
+                    let [cx, cy] = [x, y]
+                    arr.forEach((item: any) => {
+                        switch (item.type) {
+                            case 1: { 
+                                useArrowHeadRect(fabs, [cx, cy], {...item, callBack: () => { choose.option.current += 1; choose.sure() }})
+                                cy += 180
+                                break;
+                            }
+                            case 2: {
+                                useModel(fabs, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                                cy += 180
+                                break;
+                            }
+                            case 3: {
+                                useMaking(fabs, [cx, cy], item.text)
+                                initLiu(item.children.yes, cx, cy + 180)
+                                initLiu(item.children.no, cx + 440, cy)
+                                break;
+                            }
+                        }
+                    })
+                }
+                initLiu(choose.item.children, 80, 20)
+                /** text: string
+                    end: Boolean
+                    message: string
+                    view?: Boolean,
+                */
+            } else if(type === '2') {
+                useArrowHeadRect(fabs, [80, 20], { text: '汇报通知', message: '外勤，值班干部，工务，电务，列车调度员', view: true})
+                useArrowHeadRect(fabs, [80, 200], { text: '使用手摇把', message: '确认手摇把正常', view: true})
+                useArrowHeadRect(fabs, [80, 380], { text: 'FAS通知', end: true, message: '调度完成', view: true})
+            } else {
+                const arrow1 = useArrowHeadRect(fabs, [80, 20], { text: '汇报通知', message: '外勤，值班干部，工务，电务，列车调度员', dateTime: '2023-09-21 10:20:55'})
+                const arrow2 = useArrowHeadRect(fabs, [80, 200], { text: '使用手摇把', message: '确认手摇把正常'})
+                const arrow4 = useArrowHeadRect(fabs, [80, 380], { text: 'FAS通知', end: true, message: '调度完成', dateTime: '2023-09-21 10:25:55'})
+
+                let buff = [arrow1, arrow2, arrow4]
+                let i = 0
+                const renderLiu = () => {
+                        // 确定回调函数
+                    buff[i].sure().then(() => {
+                        i++
+                        if(i <= buff.length - 1)
+                        renderLiu()
+                    })
+                }
+                renderLiu()
+            }
+        })
+    }
+})
+
 let fab: any
 // let ctx: CanvasRenderingContext2D
 // 初始化画布
@@ -37,73 +121,90 @@ const init = () => {
         selection: false,
         // backgroundColor: "rgba(0,0,0,1)",
     });
-
     useFabricWheelAndMove(fab)
 
     if(type === '1') {
-        const arrow1 = useArrowHeadRect(fab, [80, 0], '汇报通知', false, '外勤，值班干部，工务，电务，列车调度员')
-        const arrow2 = useArrowHeadRect(fab, [80, 180], '使用手摇把', false, '确认手摇把正常')
-        const arrow4 = useArrowHeadRect(fab, [80, 540], 'FAS通知', true, '调度完成')
-        const arrow5 = useArrowHeadRect(fab, [520, 360], 'FAS通知', true, '调度完成')
-        const arrow3 = useMaking(fab, [80, 360], '务现场粒查，设备正常不影响运行', [arrow4], [arrow5], () => yesOrNo())
-    
-
-        let buff = [arrow1, arrow2, arrow3]
-        let i = 0;
-        const renderLiu = () => {
-            // 确定回调函数
-            buff[i].startAnimation()
-            if(buff[i].type === 'making') {
-                // if (buff[i])
-            } else {
-                const handleClick = () => {
-                    notifi.close()
-                    buff[i].sure().then(val => {
-                        if(val) {
-                            buff[i].endAnimation()
-                            i++
-                            if(i <= buff.length - 1)
-                            renderLiu()
-                        }
-                    })
-                }
-                // 创建确定框的方法
-                const createNotificationVNode  = (message: string): VNode => {
-                    return createVNode('div', { style: 'width: 15rem' }, [message, createVNode(ElButton, { style: 'display: block; margin-left: auto;', type: 'success', onClick: handleClick }, ['确定'])])
-                }
-                const notifi = ElNotification.info({
-                    title: '汇报通知',
-                    message: createNotificationVNode((buff[i] as any).message),
-                    showClose: false,
-                    duration: 0,
-                    onClose: () => {
-
+        const initLiu = (arr: any, x: number, y: number) => {
+            let [cx, cy] = [x, y]
+            arr.forEach((item: any) => {
+                switch (item.type) {
+                    case 1: { 
+                        useArrowHeadRect(fab, [cx, cy], {...item, callBack: () => {}})
+                        cy += 180
+                        break;
                     }
-                })   
-            }
-        }
-        const yesOrNo = () => {
-            buff[i].sure().then(next => {
-                buff[i].endAnimation()
-                buff = next as any
-                i = 0
-                renderLiu()
+                    case 2: {
+                        useModel(fab, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                        cy += 180
+                        break;
+                    }
+                    case 3: {
+                        useMaking(fab, [cx, cy], item.text)
+                        initLiu(item.children.yes, cx, cy + 180)
+                        initLiu(item.children.no, cx + 440, cy)
+                        break;
+                    }
+                }
             })
         }
-        renderLiu()
+        initLiu(array, 80, 0)
+        /** text: string
+            end: Boolean
+            message: string
+            view?: Boolean,
+        */
     } else if(type === '2') {
-        useArrowHeadRect(fab, [80, 0], '汇报通知', false, '外勤，值班干部，工务，电务，列车调度员')
-        useArrowHeadRect(fab, [80, 180], '使用手摇把', false, '确认手摇把正常')
-        useArrowHeadRect(fab, [80, 540], 'FAS通知', true, '调度完成')
-        useArrowHeadRect(fab, [520, 360], 'FAS通知', true, '调度完成')
-        useMaking(fab, [80, 360], '务现场粒查，设备正常不影响运行', null, null, undefined)
+        const initLiu = (arr: any, x: number, y: number) => {
+            let [cx, cy] = [x, y]
+            arr.forEach((item: any) => {
+                switch (item.type) {
+                    case 1: { 
+                        useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}})
+                        cy += 180
+                        break;
+                    }
+                    case 2: {
+                        useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                        cy += 180
+                        break;
+                    }
+                    case 3: {
+                        useMaking(fab, [cx, cy], item.text, true)
+                        initLiu(item.children.yes, cx, cy + 180)
+                        initLiu(item.children.no, cx + 440, cy)
+                        break;
+                    }
+                }
+            })
+        }
+        initLiu(array, 80, 0)
     } else {
-        const arrow1 = useArrowHeadRect(fab, [80, 0], '汇报通知', false, '外勤，值班干部，工务，电务，列车调度员')
-        const arrow2 = useArrowHeadRect(fab, [80, 180], '使用手摇把', false, '确认手摇把正常')
-        const arrow4 = useArrowHeadRect(fab, [80, 540], 'FAS通知', true, '调度完成')
-        const arrow3 = useMaking(fab, [80, 360], '务现场粒查，设备正常不影响运行', null, null, undefined, 'yes')
+        let buff: any= []
+        const initLiu = (arr: any, x: number, y: number) => {
+            let [cx, cy] = [x, y]
+            arr.forEach((item: any) => {
+                switch (item.type) {
+                    case 1: { 
+                        buff.push(useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}, dateTime: '2023-09-21 10:20:55'}))
+                        cy += 180
+                        break;
+                    }
+                    case 2: {
+                        buff.push(useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 3}))
+                        cy += 180
+                        break;
+                    }
+                    case 3: {
+                        buff.push(useMaking(fab, [cx, cy], item.text, true))
+                        initLiu(item.children.yes, cx, cy + 180)
+                        initLiu(item.children.no, cx + 440, cy)
+                        break;
+                    }
+                }
+            })
+        }
+        initLiu(array, 80, 0)
 
-        let buff = [arrow1, arrow2, arrow3, arrow4]
         let i = 0
         const renderLiu = () => {
                 // 确定回调函数
@@ -122,6 +223,9 @@ onMounted(() => {
     getGzList()
     getSjList()
     init()
+    window.addEventListener('click', (e) => {
+        console.log(e)
+    })
 })
 
 // 获取规章假数据
@@ -280,6 +384,11 @@ const handleIsLeft = () => {
             <div class="right">
                 <canvas ref="canvas"></canvas>
             </div>
+
+            <!-- 子流程 -->
+            <div class="model" v-show="isModel">
+                <canvas ref="modelCanvas"></canvas>
+            </div>
         </div>
     </div>
 </template>
@@ -430,6 +539,15 @@ const handleIsLeft = () => {
         .right {
             width: 100%;
             height: 32.5rem;
+        }
+        .model {
+            width: 30%;
+            height: 30rem;
+            position: fixed;
+            // background: rgba(0,0,0,0.8);
+            border-radius: 1rem;
+            margin-left: 60%;
+            // padding: 1rem;
         }
     }
 }

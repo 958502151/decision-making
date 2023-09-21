@@ -1,13 +1,12 @@
 import { fabric } from 'fabric'
 
 // 决策框
-const useMaking = (fab: any, point: Array<number>, text: string, yesNext?: any, noNext?: any, callBack?: Function, view?: string) => {
+const useMaking = (fab: any, point: Array<number>, text: string, view?: Boolean, yon?: string) => {
     const [x, y] = point;
     const width = 320
     const height = 82
     let flag = false
     let id: number
-    let yesOrNo: number
     const diamond = new fabric.Path(`M${width/2} 0 L${width} ${height/2} L${width/2} ${height} L0 ${height/2} Z`)
     diamond.set({ left: x, top: y, stroke: '#165DFF', fill: 'rgb(0,0,0,0)' })
 
@@ -26,26 +25,6 @@ const useMaking = (fab: any, point: Array<number>, text: string, yesNext?: any, 
         hasControls: false,
         hasBorders: false
     });
-    if(!view) {
-        fab.add(yes)
-    }
-    yes.hoverCursor = 'pointer';
-    yes.on('mouseover', function() {
-        // 在鼠标悬浮时改变箭头的样式
-        yes.set('fill', '#8afb44');
-        fab.renderAll();
-    });
-    yes.on('mouseout', function() {
-        // 在鼠标离开时还原箭头的样式
-        yes.set('fill', '#38FFFF');
-        fab.renderAll();
-    });
-    yes.on('mousedown', () => {
-        yesOrNo = 1
-        if(callBack)
-        callBack()
-        console.log('你点击了是')
-    })
 
     const arrowDown = new fabric.Polygon([
         {x: 161 + x, y: 162 + y},
@@ -71,26 +50,6 @@ const useMaking = (fab: any, point: Array<number>, text: string, yesNext?: any, 
         hasControls: false,
         hasBorders: false
     });
-    if(!view) {
-        fab.add(no)
-    }
-    no.hoverCursor = 'pointer';
-    no.on('mouseover', function() {
-        // 在鼠标悬浮时改变箭头的样式
-        no.set('fill', 'red');
-        fab.renderAll();
-    });
-    no.on('mouseout', function() {
-        // 在鼠标离开时还原箭头的样式
-        no.set('fill', '#38FFFF');
-        fab.renderAll();
-    });
-    no.on('mousedown', () => {
-        yesOrNo = 0
-        if(callBack)
-        callBack()
-        console.log('你点击了否')
-    })
 
     const arrowLeft = new fabric.Polygon([
         {x: 422 + x, y: 42 + y},
@@ -114,18 +73,17 @@ const useMaking = (fab: any, point: Array<number>, text: string, yesNext?: any, 
     });
 
     let lingXing
-    if(view === 'no')
+    if(yon === 'no')
     lingXing = new fabric.Group([diamond, lineLeft, no, arrowLeft, myText],{hasControls: false, hasBorders: false, selectable: false})
-    else if(view === 'yes')
+    else if(yon === 'yes')
     lingXing = new fabric.Group([diamond, lineDown, yes, arrowDown, myText],{hasControls: false, hasBorders: false, selectable: false})
     else
-    lingXing = new fabric.Group([diamond, lineLeft, lineDown, arrowDown, arrowLeft, myText],{hasControls: false, hasBorders: false, selectable: false})
-
+    lingXing = new fabric.Group([diamond, no, yes, lineLeft, lineDown, arrowDown, arrowLeft, myText],{hasControls: false, hasBorders: false, selectable: false})
+    lingXing.on('mousedown', () => {
+        if(!view)
+        sure()
+    })
     fab.add(lingXing)
-    if(callBack) {
-        fab.bringToFront(no)
-        fab.bringToFront(yes)
-    }
 
     const render = () => {
         if(flag) {
@@ -152,16 +110,12 @@ const useMaking = (fab: any, point: Array<number>, text: string, yesNext?: any, 
 
     const sure = () => {
         return new Promise((resolvue) => {
-            diamond.set('fill', 'rgba(22, 93, 255, 0.6)')
+            diamond.set('fill', 'rgba(22, 93, 255, 1)')
             fab.renderAll()
-            if(yesOrNo) {
-                resolvue(yesNext)
-            } else {
-                resolvue(noNext)
-            }
+            resolvue(true)
         })
     }
-    return { startAnimation, endAnimation, sure, type: 'making', yesNext, noNext }
+    return { startAnimation, endAnimation, sure, type: 'making' }
 }
 
 export default useMaking

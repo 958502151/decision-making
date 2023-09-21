@@ -47,6 +47,7 @@ onMounted(() => {
 // 路由跳转
 const router = useRouter()
 watch(active, (val) => {
+  if(['start', 'view', 'history'].includes(val))
   router.push(val)
 })
 </script>
