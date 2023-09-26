@@ -18,21 +18,59 @@ interface demoType {
     title: string
     date: string
     id: number
+    first: number
+    secend: number
 }
 
 // 模糊查询值
 const searchValue = ref<string>('')
 
 // 下拉框
-const selectValue = ref<number>(1)
+const selectValue = ref<number>(0)
 const list = ref<Array<listType>>([
-    { value: 1, label: '全部案例' },
-    { value: 2, label: '测试案例1' },
-    { value: 3, label: '测试案例2' }
+    { value: 0, label: '全部预案' },
+    { value: 2, label: '设备故障' },
+    { value: 3, label: '非正常行车' },
+    { value: 4, label: '灾害行车' },
+    { value: 5, label: '救援'},
+    { value: 6, label: '其他' }
 ])
 
+const secendSelectValue = ref<number>(0)
+const secendList: any = ({
+    2: [
+        { value: 0, label: '全部'},
+        { value: 1, label: '出站信号灯绿黄灭灯灯' },
+        { value: 2, label: '出站信号机灭灯' },
+        { value: 3, label: '道岔失去表示发车（出站信号机不能开放）' },
+        { value: 4, label: '道岔失去表示发车（出站信号机自动恢复）' },
+        { value: 5, label: '道岔失去表示接车' },
+        { value: 6, label: '轨道电路红光带接车' },
+        { value: 7, label: '进站信号机故障' },
+        { value: 8, label: '列车冒进进站信号' },
+        { value: 9, label: '区间第一离去轨红光带发车' },
+        { value: 10, label: '区间一架通过信号机故障'}
+    ],
+    3: [
+        { value: 0, label: '全部'},
+        { value: 1, label: '反方向行车' }
+    ],
+    4: [
+        { value: 0, label: '全部'},
+        { value: 1, label: '天气恶劣难以辨认信号' }
+    ],
+    5: [
+        { value: 0, label: '全部'},
+        { value: 1, label: '分部运行' },
+        { value: 2, label: '机车救援' }
+    ]
+})
+
 watch(selectValue, () => {
-    demoList.value = []
+    secendSelectValue.value = 0
+    getList()
+})
+watch(secendSelectValue, () => {
     getList()
 })
 
@@ -45,75 +83,56 @@ const demoList = ref<Array<demoType>>([])
 const loading = ref<Boolean>(false)
 // 假数据
 const getList = () => {
+    demoList.value = []
     loading.value = true
     setTimeout(() => {
         loading.value = false
         demoList.value = [
             {
                 image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
+                title: '出站信号机灭灯',
+                date: '更新于1个月前',
+                first: 2,
+                secend: 2,
                 id: 1
             },
             {
                 image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
+                title: '道岔失去表示接车',
+                date: '更新于1个月前',
+                first: 2,
+                secend: 5,
                 id: 2
             },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 3
-            },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 4
-            },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 4
-            },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 4
-            },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 4
-            },
-            {
-                image: test,
-                title: '受电弓挂异物',
-                date: '更新于14个月前',
-                id: 4
-            },
-        ]
+        ].filter(fil => (selectValue.value === 0 || fil.first === selectValue.value && (fil.secend === secendSelectValue.value || secendSelectValue.value === 0)) && (fil.title.search(searchValue.value) !== -1 || searchValue.value === ''))
     }, 2000)
 }
 </script>
 
 <template>
     <div class="start">
-        <el-input v-model="searchValue" class="search" placeholder="搜案顶案/教语/规卓/案例" :prefix-icon="Search"></el-input>
+        <el-input @keyup.enter="getList()" v-model="searchValue" class="search" placeholder="搜案预案/规章/数据/案例" :prefix-icon="Search"></el-input>
 
-        <el-select class="select" v-model="selectValue">
-            <el-option v-for="item in list" :key="item.value" :value="item.value" :label="item.label"/>
-        </el-select>
-        
+        <div style="display: flex;">
+            <div class="select">
+                <span style="width: 4rem;">类型:</span>
+                <el-select v-model="selectValue">
+                    <el-option v-for="item in list" :key="item.value" :value="item.value" :label="item.label"/>
+                </el-select>
+            </div>
+            
+            <div class="select" v-show="[2, 3, 4, 5].includes(selectValue)">
+                <span style="width: 4rem; margin-left: 2rem;">名称:</span>
+                <el-select v-model="secendSelectValue">
+                    <el-option v-for="item in secendList[selectValue]" :key="item.value" :value="item.value" :label="item.label"/>
+                </el-select>
+            </div>
+        </div>
+
         <el-scrollbar class="demo-box">
             <el-row>
                 <el-col :span="6" v-for="(item, index) in demoList" :key="index">
-                    <div class="box" @click="router.push({path: 'makingView', query: {type: 1, id: item.id}})">
+                    <div class="box" @click="router.push({path: 'makingView', query: {type: 1, id: item.id, yuan:item.id}})">
                         <img :src="item.image"/>
                         <img class="play" :src="play">
                     </div>
@@ -145,12 +164,15 @@ const getList = () => {
         background: #165DFF;
     }
     .select {
-        display: block;
-        width: 11.25rem;
+        // display: inline-block;
+        display: flex;
+        width: 15.25rem;
         height: 2.625rem;
         flex-shrink: 0;
         margin-top: 2.5rem;
         background: var(--theme-color);
+        color: #fff;
+        align-items: center;
     }
     .demo-box {
         margin-top: 0.5rem;
@@ -170,7 +192,7 @@ const getList = () => {
         }
         .title {
             color: #FFF;
-            font-family: Alibaba PuHuiTi 2.0;
+            font-family: 'Alibaba PuHuiTi 2.0';
             font-size: 1.5rem;
             font-style: normal;
             font-weight: 500;
@@ -181,7 +203,7 @@ const getList = () => {
         }
         .date {
             color: #FFF;
-            font-family: Alibaba PuHuiTi 2.0;
+            font-family: 'Alibaba PuHuiTi 2.0';
             font-size: 1rem;
             font-style: normal;
             font-weight: 400;

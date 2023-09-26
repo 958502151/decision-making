@@ -40,20 +40,36 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     stroke: '#165DFF',
     })
 
+    const message = new fabric.Textbox(option.message, {
+        left: x + 160,
+        top: y + 55,
+        width: 300,
+        fontSize: 14,
+        fill: '#fff',
+        originX: 'center',
+        originY: 'center',
+        selectable: false,
+        textAlign: 'center',
+        splitByGrapheme: true,
+        fontFamily: 'Alibaba PuHuiTi 2.0'
+    })
+
     const myText = new fabric.Text(option.text, {
         left: x + 160,
-        top: y + 41,
+        top: y + 25 - (message.height || 0) / 20,
         fontSize: 20,
         fill: '#fff',
         originX: 'center',
         originY: 'center',
-        selectable: false
+        selectable: false,
+        fontFamily: 'Alibaba PuHuiTi 2.0'
     })
+    
     let juxing: fabric.Group
     if(option.end) {
-        juxing = new fabric.Group([innerCircle, myText],{hasControls: false, hasBorders: false, selectable: false})
+        juxing = new fabric.Group([innerCircle, myText, message],{hasControls: false, hasBorders: false, selectable: false})
     } else {
-        juxing = new fabric.Group([innerCircle, line, arrowHead, myText],{hasControls: false, hasBorders: false, selectable: false})
+        juxing = new fabric.Group([innerCircle, line, arrowHead, myText, message],{hasControls: false, hasBorders: false, selectable: false})
     }
     juxing.on('mousedown', () => {
         if(!option.view)
@@ -90,14 +106,16 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
             if(innerCircle.fill !== 'rgba(22, 93, 255, 1)') {
                 innerCircle.set('fill', 'rgba(22, 93, 255, 1)')
                 const date = new Date()
-                const time = new fabric.Text(option.dateTime || date.toLocaleString().replaceAll('/', '-'), {
+                const times = option.dateTime || date.toLocaleString().replaceAll('/', '-')
+                const time = new fabric.Text(times, {
                     left: x + 160,
-                    top: y + 61,
-                    fontSize: 16,
+                    top: y + 61 + (message.height || 0) / 2,
+                    fontSize: 14,
                     fill: '#fff',
                     originX: 'center',
                     originY: 'center',
-                    selectable: false
+                    selectable: false,
+                    fontFamily: 'Alibaba PuHuiTi 2.0'
                 })
                 fab.add(time)
                 myText.animate('top', '-=10', {
@@ -105,16 +123,27 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
                     onChange: fab.renderAll.bind(fab),
                     easing: fabric.util.ease.easeInCubic
                 });
+                message.animate('top', `-=${28 - (message.height || 0) / 2}`, {
+                    duration: 1000,
+                    onChange: fab.renderAll.bind(fab),
+                    easing: fabric.util.ease.easeInCubic
+                });
+                innerCircle.animate('height', `+=${(message.height || 0) / 5}`, {
+                    duration: 1000,
+                    onChange: fab.renderAll.bind(fab),
+                    easing: fabric.util.ease.easeInCubic
+                });
                 if(option.callBack)
-                option.callBack()
-                option.ok = true
+                option.callBack(times)
+                // option.ok = true
                 fab.bringToFront(myText)
                 fab.renderAll()
                 resolvue(true)
             }
         })
     }
-    return { startAnimation, endAnimation, sure, message: option.message, type: 'rect' }
+    if(option.ok) sure()
+    return { startAnimation, endAnimation, sure, message: option.message, type: 1, ok: option.ok }
 }
 
 export default useArrowHeadRect;

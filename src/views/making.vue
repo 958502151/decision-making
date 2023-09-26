@@ -8,10 +8,16 @@ import useFabricWheelAndMove from '@/utils/useFabricWheelAndMove.ts'
 import useMaking from '@/utils/useMaking.ts'
 import useModel from '@/utils/useModel.ts'
 import { useRoute } from 'vue-router'
-import { array } from '@/utils/testData.json'
+import { array, guizhang, sjComlun, shuju } from '@/utils/testData.json'
+import useCounter from '@/store/counter.ts'
+import { ElMessage } from 'element-plus'
 
+const counter = useCounter()
 const route = useRoute()
-const type = route.query.type
+const { type, id } = route.query
+const yuan = route.query.yuan as string
+
+const myArray = JSON.parse(JSON.stringify((array as any)[yuan]))
 
 // 模糊查询值
 const searchValue = ref<string>('')
@@ -38,11 +44,13 @@ const handleModel = (e: any, item: any) => {
 }
 
 watch(isModel, (val) => {
+    let fabs: any 
     if(val) {
         nextTick(() => {
+            choose.option.current = 0; // 初始化
             const model = modelCanvas.value as HTMLCanvasElement;
 
-            const fabs = new fabric.Canvas(model, {
+            fabs = new fabric.Canvas(model, {
                 width: document.getElementsByClassName('model')[0].clientWidth - 2,
                 height: document.getElementsByClassName('model')[0].clientHeight - 2,
                 fireRightClick: true, // 启用右键，button的数字为3
@@ -51,6 +59,7 @@ watch(isModel, (val) => {
                 backgroundColor: "#1d3b51",
                 // top: 20
             });
+
             useFabricWheelAndMove(fabs)
             fabs.renderAll()
             if(type === '1') {
@@ -59,18 +68,23 @@ watch(isModel, (val) => {
                     arr.forEach((item: any) => {
                         switch (item.type) {
                             case 1: { 
-                                useArrowHeadRect(fabs, [cx, cy], {...item, callBack: () => { choose.option.current += 1; choose.sure() }})
+                                const m = useArrowHeadRect(fabs, [cx, cy], { ...item, callBack: (times: any) => { choose.option.current += 1; choose.sure(); item.dateTime = times; item.ok = true; choose.item.ok = true} })
+                                // 暂时无用代码
+                                if(item.ok) {
+                                    m.sure()
+                                    choose.item.ok = true
+                                }
                                 cy += 180
                                 break;
                             }
                             case 2: {
-                                useModel(fabs, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                                useModel(fabs, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0 })
                                 cy += 180
                                 break;
                             }
                             case 3: {
-                                useMaking(fabs, [cx, cy], item.text)
-                                initLiu(item.children.yes, cx, cy + 180)
+                                useMaking(fabs, [cx, cy], { ...item, text: item.text, callback: () => {}, ok: item.ok })
+                                initLiu(item.children.yes, cx, cy + 220)
                                 initLiu(item.children.no, cx + 440, cy)
                                 break;
                             }
@@ -84,25 +98,69 @@ watch(isModel, (val) => {
                     view?: Boolean,
                 */
             } else if(type === '2') {
-                useArrowHeadRect(fabs, [80, 20], { text: '汇报通知', message: '外勤，值班干部，工务，电务，列车调度员', view: true})
-                useArrowHeadRect(fabs, [80, 200], { text: '使用手摇把', message: '确认手摇把正常', view: true})
-                useArrowHeadRect(fabs, [80, 380], { text: 'FAS通知', end: true, message: '调度完成', view: true})
-            } else {
-                const arrow1 = useArrowHeadRect(fabs, [80, 20], { text: '汇报通知', message: '外勤，值班干部，工务，电务，列车调度员', dateTime: '2023-09-21 10:20:55'})
-                const arrow2 = useArrowHeadRect(fabs, [80, 200], { text: '使用手摇把', message: '确认手摇把正常'})
-                const arrow4 = useArrowHeadRect(fabs, [80, 380], { text: 'FAS通知', end: true, message: '调度完成', dateTime: '2023-09-21 10:25:55'})
-
-                let buff = [arrow1, arrow2, arrow4]
-                let i = 0
-                const renderLiu = () => {
-                        // 确定回调函数
-                    buff[i].sure().then(() => {
-                        i++
-                        if(i <= buff.length - 1)
-                        renderLiu()
+                const initLiu = (arr: any, x: number, y: number) => {
+                    let [cx, cy] = [x, y]
+                    arr.forEach((item: any) => {
+                        switch (item.type) {
+                            case 1: { 
+                                useArrowHeadRect(fabs, [cx, cy], {...item, view: true, callBack: () => {}})
+                                cy += 180
+                                break;
+                            }
+                            case 2: {
+                                useModel(fabs, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                                cy += 180
+                                break;
+                            }
+                            case 3: {
+                                useMaking(fabs, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true })
+                                initLiu(item.children.yes, cx, cy + 200)
+                                initLiu(item.children.no, cx + 440, cy + 20)
+                                break;
+                            }
+                        }
                     })
                 }
-                renderLiu()
+                initLiu(choose.item.children, 80, 0)
+            } else {
+                let buff: any= []
+                const initLiu = (arr: any, x: number, y: number) => {
+                    let [cx, cy] = [x, y]
+                    arr.forEach((item: any) => {
+                        switch (item.type) {
+                            case 1: { 
+                                buff.push(useArrowHeadRect(fabs, [cx, cy], {...item, view: true, callBack: () => {}}))
+                                cy += 180
+                                break;
+                            }
+                            case 2: {
+                                buff.push(useModel(fabs, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: item.children.length}))
+                                cy += 180
+                                break;
+                            }
+                            case 3: {
+                                buff.push(useMaking(fabs, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true }))
+                                initLiu(item.children.yes, cx, cy + 200)
+                                initLiu(item.children.no, cx + 440, cy + 20)
+                                break;
+                            }
+                        }
+                    })
+                }
+                initLiu(choose.item.children, 80, 0)
+
+                // let i = 0
+                // const renderLiu = () => {
+                //         // 确定回调函数
+                //     if(buff[i].ok || buff[i].type === 2) {
+                //         buff[i].sure().then(() => {
+                //             i++
+                //             if(i <= buff.length - 1)
+                //             renderLiu()
+                //         })
+                //     }
+                // }
+                // renderLiu()
             }
         })
     }
@@ -122,14 +180,16 @@ const init = () => {
         // backgroundColor: "rgba(0,0,0,1)",
     });
     useFabricWheelAndMove(fab)
-
+    let mk = true
     if(type === '1') {
         const initLiu = (arr: any, x: number, y: number) => {
             let [cx, cy] = [x, y]
+            mk = !mk
+
             arr.forEach((item: any) => {
                 switch (item.type) {
                     case 1: { 
-                        useArrowHeadRect(fab, [cx, cy], {...item, callBack: () => {}})
+                        useArrowHeadRect(fab, [cx, cy], {...item, callBack: (times: any) => {item.dateTime = times; item.ok = true}})
                         cy += 180
                         break;
                     }
@@ -139,15 +199,15 @@ const init = () => {
                         break;
                     }
                     case 3: {
-                        useMaking(fab, [cx, cy], item.text)
-                        initLiu(item.children.yes, cx, cy + 180)
-                        initLiu(item.children.no, cx + 440, cy)
+                        useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {item.ok = true}, ok: item.ok })
+                        initLiu(item.children.yes, cx, cy + 200)
+                        initLiu(item.children.no, mk ? (cx + 440) : (cx - 440), cy + 20)
                         break;
                     }
                 }
             })
         }
-        initLiu(array, 80, 0)
+        initLiu(myArray, 80, 0)
         /** text: string
             end: Boolean
             message: string
@@ -155,6 +215,7 @@ const init = () => {
         */
     } else if(type === '2') {
         const initLiu = (arr: any, x: number, y: number) => {
+            mk = !mk
             let [cx, cy] = [x, y]
             arr.forEach((item: any) => {
                 switch (item.type) {
@@ -169,52 +230,57 @@ const init = () => {
                         break;
                     }
                     case 3: {
-                        useMaking(fab, [cx, cy], item.text, true)
-                        initLiu(item.children.yes, cx, cy + 180)
-                        initLiu(item.children.no, cx + 440, cy)
+                        useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true })
+                        initLiu(item.children.yes, cx, cy + 200)
+                        initLiu(item.children.no, mk ? (cx + 440) : (cx - 440), cy + 20)
                         break;
                     }
                 }
             })
         }
-        initLiu(array, 80, 0)
+        initLiu(myArray, 80, 0)
     } else {
         let buff: any= []
         const initLiu = (arr: any, x: number, y: number) => {
             let [cx, cy] = [x, y]
+            mk = !mk
             arr.forEach((item: any) => {
                 switch (item.type) {
                     case 1: { 
-                        buff.push(useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}, dateTime: '2023-09-21 10:20:55'}))
+                        buff.push(useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}}))
                         cy += 180
                         break;
                     }
                     case 2: {
-                        buff.push(useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 3}))
+                        const current = item.children.filter((sub: any) => sub.ok).length
+                        buff.push(useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current}))
                         cy += 180
                         break;
                     }
                     case 3: {
-                        buff.push(useMaking(fab, [cx, cy], item.text, true))
-                        initLiu(item.children.yes, cx, cy + 180)
-                        initLiu(item.children.no, cx + 440, cy)
+                        // mk = !mk
+                        buff.push(useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true }))
+                        initLiu(item.children.yes, cx, cy + 200)
+                        initLiu(item.children.no, mk ? cx + 440 : cx - 440, cy + 20)
                         break;
                     }
                 }
             })
         }
-        initLiu(array, 80, 0)
+        initLiu((counter.historyArray as any).find((fin: any) => fin.id == id).array, 80, 0)
 
-        let i = 0
-        const renderLiu = () => {
-                // 确定回调函数
-            buff[i].sure().then(() => {
-                i++
-                if(i <= buff.length - 1)
-                renderLiu()
-            })
-        }
-        renderLiu()
+        // let i = 0
+        // const renderLiu = () => {
+        //     // 确定回调函数
+        //     if(buff[i].ok) {
+        //         buff[i].sure().then(() => {
+        //             i++
+        //             if(i <= buff.length - 1)
+        //             renderLiu()
+        //         })
+        //     }
+        // }
+        // renderLiu()
     }
 }
 
@@ -223,9 +289,8 @@ onMounted(() => {
     getGzList()
     getSjList()
     init()
-    window.addEventListener('click', (e) => {
-        console.log(e)
-    })
+    // window.addEventListener('click', (e) => {
+    // })
 })
 
 // 获取规章假数据
@@ -234,24 +299,7 @@ const getGzList = () => {
     loading.value = true
     setTimeout(()=>{
         loading.value = false
-        gzList.value = [
-            {
-                title: '铁总 普速技规 第2条',
-                content: '铁路基本建设应严格按照国家规定的程序进行，必须符合国家相关法律法规，执行国家标准、行业标准和技术规范。设计工作必须由具有相应资质等级的单位承担，根据已批准的可行性研究报告进行并充分听取建设单位、使用部门的意见。设计文件须经有关部门审查，并按规定的审批程序批准'
-            },
-            {
-                title: '铁总 普速技规 第2条',
-                content: '铁路基本建设应严格按照国家规定的程序进行，必须符合国家相关法律法规，执行国家标准、行业标准和技术规范。设计工作必须由具有相应资质等级的单位承担，根据已批准的可行性研究报告进行并充分听取建设单位、使用部门的意见。设计文件须经有关部门审查，并按规定的审批程序批准'
-            },
-            {
-                title: '铁总 普速技规 第2条',
-                content: '铁路基本建设应严格按照国家规定的程序进行，必须符合国家相关法律法规，执行国家标准、行业标准和技术规范。设计工作必须由具有相应资质等级的单位承担，根据已批准的可行性研究报告进行并充分听取建设单位、使用部门的意见。设计文件须经有关部门审查，并按规定的审批程序批准'
-            },
-            {
-                title: '铁总 普速技规 第2条',
-                content: '铁路基本建设应严格按照国家规定的程序进行，必须符合国家相关法律法规，执行国家标准、行业标准和技术规范。设计工作必须由具有相应资质等级的单位承担，根据已批准的可行性研究报告进行并充分听取建设单位、使用部门的意见。设计文件须经有关部门审查，并按规定的审批程序批准'
-            },
-        ]
+        gzList.value = (guizhang as any)[yuan]
     }, 2000)
 }
 
@@ -261,73 +309,12 @@ const getSjList = () => {
     loading.value = true
     setTimeout(()=>{
         loading.value = false
-        dataSource.value = [
-            {
-                id: 1,
-                home: '龙宫',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 2,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 3,
-                home: '龙宫',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 4,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 4,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 4,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 4,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 4,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-            {
-                id: 8,
-                home: '原平南',
-                area: '宁武西(不含)-龙(含)-北大牛(不含)上下行'
-            },
-        ]
+        dataSource.value = (shuju as any)[yuan]
     }, 2000)
 }
 
 // 表格头,后续可能更改从后台请求表格头
-const tableColumn: Array<any> = [
-    {
-        label: '序号',
-        prop: 'id',
-        width: 60
-    },
-    {
-        label: '变电所',
-        prop: 'home',
-        width: 120
-    },
-    {
-        label: '供电范围',
-        prop: 'area'
-    }
-]
+const tableColumn: Array<any> = (sjComlun as any)[yuan]
 
 //
 const handleIsLeft = () => {
@@ -338,16 +325,23 @@ const handleIsLeft = () => {
         fab.renderAll()
     })
 }
+
+// 保存
+const handleSure = () => {
+    (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '张志伟', yuan, name: yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'})
+    ElMessage.success('确定成功')
+}
 </script>
 
 <template>
     <div class="making">
         <div class="title">
-            <span>道岔失去表示</span>
+            <span>{{yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'}}</span>
+            <el-button v-if="type === '1'" class="btn" color="#38FFFF" @click="handleSure" type="success">保存案例</el-button>
         </div>
         <div class="box">
             <div class="left" v-show="isLeft">
-                <el-input v-model="searchValue" class="search" placeholder="搜案顶案/教语/规卓/案例" :prefix-icon="Search">
+                <el-input v-model="searchValue" class="search" placeholder="搜案预案/规章/数据/案例" :prefix-icon="Search">
                     <template #suffix>
                         <el-icon style="cursor: pointer;" @click="handleIsLeft"><Fold /></el-icon>
                     </template>
@@ -361,18 +355,18 @@ const handleIsLeft = () => {
                 <el-scrollbar v-show="light === 1" v-loading="loading" style="overflow-y: auto; height: 22rem; margin-top: 0.5rem;">
                     <div class="gz-box" v-for="(item, index) in gzList" :key="index">
                         <div class="gz-title">{{ item.title }}</div>
-                        <div class="content">{{ item.content }}</div>
+                        <div class="content" v-html="item.content"></div>
                     </div>
                 </el-scrollbar>
 
-                <el-scrollbar v-show="light === 2" v-loading="loading" style="overflow-y: auto; height: 22rem; margin-top: 0.5rem;">
-                    <div class="sj-title">·供电臂数据</div>
+                <div v-show="light === 2" v-loading="loading">
+                    <div class="sj-title">·{{yuan === '1' ? '出站信号机' : '道岔'}}</div>
                     <div class="sj-content table">
-                        <el-table empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource">
+                        <el-table :max-height="310" empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource">
                             <el-table-column v-for="(item, index) in tableColumn" :key="index" v-bind="item"/>
                         </el-table>
                     </div>
-                </el-scrollbar>
+                </div>
 
                 <div class="warn">
                     <el-icon color="rgba(255, 129, 38, 1)" style="margin-right: 0.5rem;"><Warning /></el-icon>请注意及时向领导汇报
@@ -386,7 +380,7 @@ const handleIsLeft = () => {
             </div>
 
             <!-- 子流程 -->
-            <div class="model" v-show="isModel">
+            <div class="model" v-if="isModel">
                 <canvas ref="modelCanvas"></canvas>
             </div>
         </div>
@@ -406,12 +400,16 @@ const handleIsLeft = () => {
         height: 2.75rem;
         background: linear-gradient(90deg, #165cff87 0%, rgba(22, 93, 255, 0.00) 100%);
         color: #FFF;
-        font-family: Alibaba PuHuiTi 2.0;
+        font-family: 'Alibaba PuHuiTi 2.0';
         font-size: 1.25rem;
         font-style: normal;
         font-weight: 500;
         line-height:  2.75rem;
         padding: 0 1.25rem;
+        .btn {
+            color: #068897;
+            margin-left: 2rem;
+        }
         
     }
     .box {
@@ -431,7 +429,7 @@ const handleIsLeft = () => {
                 justify-content: center;
                 margin-top: 1rem;
                 color: rgba(255, 255, 255, 0.8);
-                font-family: Alibaba PuHuiTi 2.0;
+                font-family: 'Alibaba PuHuiTi 2.0';
                 font-size: 1rem;
                 font-style: normal;
                 font-weight: 500;
@@ -448,7 +446,7 @@ const handleIsLeft = () => {
                 }
                 .light {
                     color: var(--unnamed, #38FFFF);
-                    font-family: Alibaba PuHuiTi 2.0;
+                    font-family: 'Alibaba PuHuiTi 2.0';
                     font-size: 1rem;
                     font-style: normal;
                     font-weight: 700;
@@ -463,7 +461,7 @@ const handleIsLeft = () => {
                 margin: 1rem 1.25rem 1rem 1.25rem;
                 .gz-title {
                     color: #38FFFF;
-                    font-family: Alibaba PuHuiTi 2.0;
+                    font-family: 'Alibaba PuHuiTi 2.0';
                     font-size: 1rem;
                     font-style: normal;
                     font-weight: 400;
@@ -471,7 +469,7 @@ const handleIsLeft = () => {
                 }
                 .content {
                     color: #FFF;
-                    font-family: Alibaba PuHuiTi 2.0;
+                    font-family: 'Alibaba PuHuiTi 2.0';
                     font-size: 0.875rem;
                     font-style: normal;
                     font-weight: 400;
@@ -487,7 +485,7 @@ const handleIsLeft = () => {
                 padding: 0.75rem 0;
                 margin: 0.75rem auto 0 auto;
                 color: #FFF;
-                font-family: Alibaba PuHuiTi 2.0;
+                font-family: 'Alibaba PuHuiTi 2.0';
                 font-size: 1rem;
                 font-style: normal;
                 font-weight: 400;
@@ -498,7 +496,7 @@ const handleIsLeft = () => {
             }
             .sj-title {
                 color: #38FFFF;
-                font-family: Alibaba PuHuiTi 2.0;
+                font-family: 'Alibaba PuHuiTi 2.0';
                 font-size: 0.875rem;
                 font-style: normal;
                 font-weight: 400;
@@ -512,10 +510,11 @@ const handleIsLeft = () => {
             }
             .table {
                 .header {
-                    background: #0b1c43;
+                    background: #041c7d;
                     height: 1.75rem;
                     flex-shrink: 0;
                     text-align: center;
+                    color: #fff;
                 }
                 .cell {
                     text-align: center;
@@ -524,11 +523,12 @@ const handleIsLeft = () => {
                     .btn {
                         color: #38FFFF;
                         text-align: center;
-                        font-family: Alibaba PuHuiTi 2.0;
+                        font-family: 'Alibaba PuHuiTi 2.0';
                         font-size: 0.875rem;
                         font-style: normal;
                         font-weight: 500;
                         line-height: normal;
+                        border-radius: 0;
                     }
                 }
             }

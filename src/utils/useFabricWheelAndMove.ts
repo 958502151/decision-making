@@ -6,15 +6,14 @@ const useFabricWheelAndMove= (fab: any) => {
     //处理canvas整体缩放
     fab.on('mouse:wheel', function (opt: { e: { deltaY: any; offsetX: any; offsetY: any; preventDefault: () => void; stopPropagation: () => void; }; }) {
         if (!fab) return;
-
+        opt.e.preventDefault();
         let delta = opt.e.deltaY;
         let zoom = fab.getZoom();
         zoom *= 0.999 ** delta;
         if (zoom > 20) zoom = 20;
-        if (zoom < 0.01) zoom = 0.01;
+        if (zoom < 0.1) zoom = 0.1;
 
         fab.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-        opt.e.preventDefault();
         opt.e.stopPropagation();
     });
 

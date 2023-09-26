@@ -1,47 +1,145 @@
 {
-    "array": [
+    "array": {
+        "1": [
         {
-            "text": "汇报通知",
-            "message": "外勤，值班干部，工务，电务吗，列车调度员",
+            "text": "FAS通知",
+            "message": "设备故障，出站信号机灭灯",
             "type": 1
         },
         {
-            "text": "使用手摇把",
-            "message": "确认手摇把正常",
+            "text": "汇报通知",
+            "message": "值班干部，电务，列车调度员",
             "type": 2,
             "children": [
                 {
-                    "text": "汇报通知",
-                    "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                    "text": "FAS通知",
+                    "message": "通知值班干部，出站信号机故障，影响发车，上岗盯控",
                     "type": 1
                 },
                 {
-                    "text": "汇报通知",
-                    "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                    "text": "FAS通知",
+                    "message": "通知电务，出站信号故障，现场检查",
                     "type": 1
                 },
                 {
-                    "text": "汇报通知",
-                    "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                    "text": "FAS通知",
+                    "message": "通知列车调度员，出站信号机故障，影响发车",
                     "end": true,
                     "type": 1
                 }
             ]
         },
         {
-            "text": "务现场粒查，设备正常不影响运行",
-            "message": "外勤，值班干部，工务，电务吗，列车调度员",
+            "text": "行检簿登销记",
+            "message": "登记信号机故障，影响发车",
+            "type": 1
+        },
+        {
+            "text": "电务现场检查，故障暂不能修复，信号机停用",
+            "message": "外勤，值班干部，工务，电务，列车调度员",
             "type": 3,
             "children": {
                 "yes": [
                     {
                         "text": "FAS通知",
-                        "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                        "message": "通知列车调度员，电务现场检查，故障暂不能修复，信号机停用，使用绿色许可证发车",
                         "type": 1
-                    },
-                    {
-                        "text": "FAS通知",
-                        "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                    },{
+                        "text": "准备发车进路",
+                        "message": "准备发车进路",
+                        "type": 2,
+                        "children": [
+                            {
+                                "text": "车务终端",
+                                "message": "发车进路上所有道岔搬动至所需位置",
+                                "type": 1
+                            },
+                            {
+                                "text": "车务终端",
+                                "message": "发车进路上所有道岔单锁",
+                                "type": 1,
+                                "end": true
+                            }
+                        ]
+                    },{
+                        "text": "办理发车凭证",
+                        "message": "办理绿色许可证发车",
+                        "type": 2,
+                        "children": [
+                            {
+                                "text": "凭证填写",
+                                "message": "填写绿色许可证，加盖站名印",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知外勤，核对绿色许可证",
+                                "type": 1
+                            },
+                            {
+                                "text": "现场反馈",
+                                "message": "绿色许可证核对无误",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知外勤，将绿色许可证交于司机",
+                                "type": 1,
+                                "end": true
+                            }
+                        ]
+                    },{
+                        "text": "办理发车",
+                        "message": "具备发车条件后，办理发车",
+                        "type": 2,
+                        "children": [
+                            {
+                                "text": "FAS通知",
+                                "message": "通知外勤，检查是否具备发车条件",
+                                "type": 1
+                            },
+                            {
+                                "text": "现场反馈",
+                                "message": "具备发车条件",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知司机，车机联控，x次x站x道发车进路好了",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知外勤，x次x站x道发车",
+                                "type": 1,
+                                "end": true
+                            }
+                        ]
+                    },{
+                        "text": "出发报点",
+                        "message": "出发报点",
+                        "type": 2,
+                        "children": [
+                            {
+                                "text": "车务终端",
+                                "message": "行车日志人工报点",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知车站值班员，向邻站发车报点",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知列车调度员，出发报点",
+                                "type": 1,
+                                "end": true
+                            }
+                        ]
+                    },{
+                        "text": "车务终端",
+                        "message": "解锁发车进路上所有道岔",
                         "type": 1,
                         "end": true
                     }
@@ -49,34 +147,976 @@
                 "no": [
                     {
                         "text": "FAS通知",
-                        "message": "外勤，值班干部，工务，电务吗，列车调度员",
+                        "message": "通知列车调度员，电务设备故障修复，正常发车",
                         "type": 1
                     },
                     {
-                        "text": "务现场粒查，设备正常不影响运行",
-                        "message": "外勤，值班干部，工务，电务吗，列车调度员",
-                        "type": 3,
-                        "children": {
-                            "yes": [
-                                {
-                                    "text": "FAS通知",
-                                    "message": "外勤，值班干部，工务，电务吗，列车调度员",
-                                    "type": 1,
-                                    "end": true
-                                }
-                            ],
-                            "no": [
-                                {
-                                    "text": "FAS通知",
-                                    "message": "外勤，值班干部，工务，电务吗，列车调度员",
-                                    "type": 1,
-                                    "end": true
-                                }
-                            ]
-                        }
+                        "text": "正常发车",
+                        "message": "确认手摇把正常",
+                        "type": 2,
+                        "end": true,
+                        "children": [
+                            {
+                                "text": "车务终端",
+                                "message": "开放信号，排列发车进路",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知司机，联控司机，电务设备故障修复，正常发车",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "X次x道发车",
+                                "end": true,
+                                "type": 1
+                            }
+                        ]
                     }
                 ]
             }
         }
-    ]
+        ],
+        "2": [
+            {
+                "text": "FAS通知",
+                "message": "通知司机，进站列车机外停车",
+                "type": 1
+            },
+            {
+                "text": "汇报通知",
+                "message": "扳道员，值班干部，工务，电务，列车调度员",
+                "type": 2,
+                "children": [
+                    {
+                        "text": "FAS通知",
+                        "message": "通知扳道员，道岔失表，现场检查，确认故障道岔开通位置",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知值班干部，道岔失表，影响接车，上岗盯控",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知工务，道岔失表，现场检验",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知电务，道岔失表，现场检查",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知列车调度员，道岔失表，影响接车",
+                        "end": true,
+                        "type": 1
+                    }
+                ]
+            },{
+                "text": "行检簿登销记",
+                "message": "登记道岔失表，影响接车",
+                "type": 1
+            },{
+                "text": "工务现场检查，设备正常，不影响运行",
+                "message": "外勤，值班干部，工务，电务，列车调度员",
+                "type": 3,
+                "children": {
+                    "yes": [
+                        {
+                            "text": "电务现场检查，设备故障，暂不能修复",
+                            "message": "外勤，值班干部，工务，电务，列车调度员",
+                            "type": 3,
+                            "left": true,
+                            "children": {
+                                "yes": [
+                                    {
+                                        "text": "FAS通知",
+                                        "message": "通知列车调度员，工务设备正常，不影响运行，电务设备故障，暂不能修复，使用引导信号接车",
+                                        "type": 1
+                                    },
+                                    {
+                                        "text": "故障道岔是否在所需位置",
+                                        "message": "外勤，值班干部，工务，电务，列车调度员",
+                                        "type": 3,
+                                        "children": {
+                                            "yes": [
+                                                {
+                                                    "text": "准备接车进路",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，确认故障道岔开通位置及加锁状态",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "接车进路上所有道岔搬动至所需位置",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "登记使用引导总锁，引导按钮",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "使用引导总锁按钮",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "办理引导",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "办理接车",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知外勤，x次接近，x道停车",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知司机，车机联控，引导接车，注意引导信号",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，x次接近，x道停车",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "到达报点",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "行车日志人工报点",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知列车调度员，到达报点",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "解锁接车进路",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "end": true,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，解锁故障道岔",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "登记使用引导总锁解锁进路",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "引导总锁解锁进路",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "no": [
+                                                {
+                                                    "text": "使用手摇把",
+                                                    "message": "使用手摇把将道岔摇至所需位置",
+                                                    "type": 2,
+                                                    "end": true,
+                                                    "children": [
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "道岔失表，领取手摇把现场准备进路",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，行车室领取手摇把",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，准备接车进路，将故障道岔摇至所需位置并加锁",
+                                                            "end": true,
+                                                            "type": 1
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "no": [
+                                    {
+                                        "text": "FAS通知",
+                                        "message": "通知列车调度员，工务设备正常，电务设备已修复",
+                                        "type": 1
+                                    },{
+                                        "text": "正常接车",
+                                        "message": "按照正常接车手续",
+                                        "type": 2,
+                                        "end": true,
+                                        "children": [
+                                            {
+                                                "text": "车务终端",
+                                                "message": "开放信号，排列接车进路",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知外勤，X次x道接车",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知司机，车机联控，工务设备正常、电务设备故障修复，正常接车",
+                                                "end": true,
+                                                "type": 1
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "no": [
+                        {
+                            "text": "FAS通知",
+                            "message": "通知司机，工务设备故障，影响接车",
+                            "type": 1
+                        },{
+                            "text": "FAS通知",
+                            "message": "通知列车调度员，工务设备故障，影响接车",
+                            "type": 1,
+                            "end": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "guizhang": {
+        "1": [
+            {
+                "title": "普铁技规第365条",
+                "content": "出站信号机发生故障时，除按规定交递行车凭证外，对通过列车应预告司机，并显示通过手信号。装有进路表示器或发车线路表示器的出站信号机，当该表示器不良时，由办理发车人员通知司机后，列车凭出站信号机的显示出发。"
+            },{
+                "title": "普铁技规第403条",
+                "content": "车站值班员发现或接到行车设备故障的报告后，应立即通知设备管理单位相关人员，并在《行车设备检查登记簿》内登记。"
+            },{
+                "title": "普铁技规第315条",
+                "content": "自动闭塞区段遇下列情况发车的行车凭证见第32表。"
+            }
+        ],
+        "2": [
+            {
+                "title": "朔黄行规第125条",
+                "content": "分散自律控制模式中心操作方式下非正常情况的处理规定</br>1.遇站内轨道电路出现红光带、道岔转换不到位、不转换或失去表示时，助理调度员须在《行车设备检查登记簿》内登记，通知车站值班员派人检查、处理。 车站值班员得到现场检查确认的汇报后，及时将检查结果向助理调度员汇报。助理调度员根据现场汇报的情况，确认故障区段（线路）无障碍物及进路正确，并对进路上故障区域内的道岔施行单独锁闭后，方可组织办理接发列车。必要时转为车站操作方式或转入非常站控模式，由车站组织办理接发列车。"
+            }
+        ]
+    },
+    "shuju": {
+        "1": [
+            {
+                "cz": "宁武西",
+                "mc": "S4",
+                "wz": "16Km311m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "SⅡ",
+                "wz": "16Km304m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "SⅠ",
+                "wz": "16Km339m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "S3",
+                "wz": "16Km327m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "SZ",
+                "wz": "16Km514m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "X4",
+                "wz": "15Km258m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "XⅡ",
+                "wz": "15Km258m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "XⅠ",
+                "wz": "15Km277m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "X3",
+                "wz": "15Km277m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "宁武西",
+                "mc": "XZ",
+                "wz": "15Km005m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "SⅠ",
+                "wz": "43km055m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "SⅡ",
+                "wz": "43km110m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S3",
+                "wz": "43km072m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S4",
+                "wz": "42km911m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S5",
+                "wz": "43km072m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S5L",
+                "wz": "42km481m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S6",
+                "wz": "42km911m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "S6L",
+                "wz": "42km518m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "S7L",
+                "wz": "42km481m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "S8L",
+                "wz": "42km518m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "XⅠ",
+                "wz": "41km077m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "XⅡ",
+                "wz": "41km053m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X3",
+                "wz": "41km125m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X4",
+                "wz": "41km111m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X5",
+                "wz": "41km125m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X5L",
+                "wz": "41km377m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X6",
+                "wz": "41km111m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "有"
+            },{
+                "cz": "龙宫",
+                "mc": "X6L",
+                "wz": "41km467m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "X7L",
+                "wz": "41km431m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            },{
+                "cz": "龙宫",
+                "mc": "X8L",
+                "wz": "41km467m",
+                "lb": "色灯",
+                "sfgz": "否",
+                "jyfs": "调车",
+                "zmfs": "电灯",
+                "ywfsxh": "无",
+                "ywjlbsq": "无"
+            }
+        ],
+        "2": [
+            {
+                "cz": "宁武西",
+                "bh": "1/3",
+                "zch": "12",
+                "dwktwz": "Ⅱ/Ⅰ道",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "5/7",
+                "zch": "12",
+                "dwktwz": "Ⅰ/Ⅱ道",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "9/15",
+                "zch": "12",
+                "dwktwz": "Ⅰ/安全线",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "11/13",
+                "zch": "12",
+                "dwktwz": "Ⅱ/安全线",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "17",
+                "zch": "12",
+                "dwktwz": "Ⅰ道",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "2/4",
+                "zch": "12",
+                "dwktwz": "Ⅰ/Ⅱ道",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "6/8",
+                "zch": "12",
+                "dwktwz": "Ⅱ/Ⅰ道",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "10",
+                "zch": "12",
+                "dwktwz": "Ⅰ道",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "12",
+                "zch": "12",
+                "dwktwz": "4道",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "宁武西",
+                "bh": "14",
+                "zch": "12",
+                "dwktwz": "Ⅰ道",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "1/3",
+                "zch": "12",
+                "dwktwz": "Ⅰ/Ⅱ",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "5",
+                "zch": "12",
+                "dwktwz": "Ⅱ",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "7",
+                "zch": "12",
+                "dwktwz": "Ⅰ",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "9",
+                "zch": "12",
+                "dwktwz": "3",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "11/13",
+                "zch": "12",
+                "dwktwz": "4/6",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "15/17",
+                "zch": "12",
+                "dwktwz": "6/4",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "19",
+                "zch": "12",
+                "dwktwz": "6",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "21",
+                "zch": "12",
+                "dwktwz": "5",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "2/4",
+                "zch": "12",
+                "dwktwz": "Ⅱ/Ⅰ",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "6/8",
+                "zch": "12",
+                "dwktwz": "Ⅰ/Ⅱ",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "10",
+                "zch": "12",
+                "dwktwz": "Ⅱ",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "12",
+                "zch": "12",
+                "dwktwz": "4",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "14",
+                "zch": "12",
+                "dwktwz": "Ⅰ",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "16",
+                "zch": "12",
+                "dwktwz": "3",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "18",
+                "zch": "12",
+                "dwktwz": "5",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "20/22",
+                "zch": "12/9",
+                "dwktwz": "7/10",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "24",
+                "zch": "12",
+                "dwktwz": "13",
+                "ldhdd": "单动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "26/28",
+                "zch": "12",
+                "dwktwz": "8/6",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            },{
+                "cz": "龙宫",
+                "bh": "30/32",
+                "zch": "12",
+                "dwktwz": "6/8",
+                "ldhdd": "联动",
+                "lsfs": "集中",
+                "czfs": "电动",
+                "ywdcbsq": "无",
+                "bsqywzm": "无"
+            }
+        ]
+    },
+    "sjComlun": {
+        "1": [
+            {
+                "label": "车站",
+                "prop": "cz",
+                "width": 100
+            },
+            {
+                "label": "名称",
+                "prop": "mc"
+            },
+            {
+                "label": "位置",
+                "prop": "wz",
+                "width": 130
+            },
+            {
+                "label": "类别",
+                "prop": "lb"
+            },
+            {
+                "label": "是否高柱",
+                "prop": "sfgz"
+            },
+            {
+                "label": "兼用方式",
+                "prop": "jyfs"
+            },
+            {
+                "label": "照明方式",
+                "prop": "zmfs"
+            },
+            {
+                "label": "有无复式信号",
+                "prop": "ywfsxh"
+            },
+            {
+                "label": "有无进路表示器",
+                "prop": "ywjlbsq"
+            }
+        ],
+        "2": [
+            {
+                "label": "车站",
+                "prop": "cz",
+                "width": 110
+            },
+            {
+                "label": "编号",
+                "prop": "bh",
+                "width": 110
+            },
+            {
+                "label": "辙叉号",
+                "prop": "zch"
+            },
+            {
+                "label": "定位开通位置",
+                "prop": "dwktwz",
+                "width": 130
+            },
+            {
+                "label": "联动或单动",
+                "prop": "ldhdd"
+            },
+            {
+                "label": "联锁方式",
+                "prop": "lsfs"
+            },
+            {
+                "label": "操作方式",
+                "prop": "czfs"
+            },
+            {
+                "label": "有无道岔（脱轨）表示器",
+                "prop": "ywdcbsq"
+            },
+            {
+                "label": "表示器有无照明",
+                "prop": "bsqywzm"
+            }
+        ]
+    }
 }

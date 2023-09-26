@@ -10,7 +10,7 @@ import { onMounted, nextTick } from 'vue'
 onMounted(() => {
     nextTick(() => {
         const canvas = document.getElementById('myCanvas') as HTMLElement
-        const ctx = canvas.getContext('2d');
+        const ctx = (canvas as any).getContext('2d');
         let isDragging = false
         let lastX = 0
         let lastY = 0
@@ -28,6 +28,7 @@ onMounted(() => {
         // 鼠标移动事件处理程序
         const handleMouseMove = (e: any) => {
             if (isDragging) {
+                ctx.clearRect(0, 0, 5134, 3167)
                 const deltaX = e.clientX - lastX
                 const deltaY = e.clientY - lastY
                 lastX = e.clientX
@@ -55,6 +56,7 @@ onMounted(() => {
             } else {
                 scale /= 1.1
             }
+            ctx.clearRect(0, 0, 5134, 3167)
             ctx.scale(scale, scale)
             draw(ctx)
         }
@@ -72,7 +74,7 @@ const init = (doc: any) => {
     const ctx = doc.getContext('2d')
     ctx.width = 5143,
     ctx.height = 3167,
-    ctx.backgroundColor = "rgba(0,0,0,0)",
+    ctx.backgroundColor = "rgba(0,0,0,1)",
     ctx.scale(0.2, 0.2)
     draw(ctx)
 }
@@ -80,7 +82,7 @@ const init = (doc: any) => {
 // 批量绘制
 const draw = (ctx: any) => {
     let i = 0
-    while(i !== 1000) {
+    while(i !== 10000) {
         ctx.beginPath()
         // ctx.arc(Math.floor(Math.random()*5000), Math.floor(Math.random()*3000), 50, 0, Math.PI * 2, false)
         ctx.arc(Math.floor(Math.random()*5000), Math.floor(Math.random()*3000), Math.random()*50 + 5, 0, Math.PI * 2, false)

@@ -1,10 +1,12 @@
 <template>
     <el-scrollbar class="boxsss">
         <canvas id="test"></canvas>
+        <canvas id="static"></canvas>
     </el-scrollbar>
 </template>
 
 <script setup lang="ts">
+
 import { fabric } from 'fabric'
 import { onMounted, ref } from 'vue'
 
@@ -15,7 +17,17 @@ onMounted(() => {
 
 const init = (doc: HTMLElement | null) => {
     const canvas = ref<any>(null)
+    let staticCanvas: any
     const canvasHtml = doc as HTMLCanvasElement;
+
+    staticCanvas = new fabric.StaticCanvas(document.getElementById('static') as any, {
+        width: 5143,
+        height: 3167,
+        fireRightClick: true, // 启用右键，button的数字为3
+        imageSmoothingEnabled: false,
+        selection: false,
+        backgroundColor: "rgba(0,0,0,1)",
+    });
 
     canvas.value = new fabric.Canvas(canvasHtml, {
         width: 5143,
@@ -23,7 +35,7 @@ const init = (doc: HTMLElement | null) => {
         fireRightClick: true, // 启用右键，button的数字为3
         imageSmoothingEnabled: false,
         selection: false,
-        backgroundColor: "rgba(0,0,0,1)",
+        backgroundColor: "rgba(0,0,0,0)",
     });
 
     let i = 0
@@ -33,7 +45,10 @@ const init = (doc: HTMLElement | null) => {
     const m = () => {
         const n = buff.slice(i, i+500)
         n.forEach((item: any) => {
+            if(i-500 < 1000)
             canvas.value.add(item)
+            else
+            staticCanvas.add(item)
         })
         i += 500
         if(i-500 < buff.length)
@@ -45,11 +60,13 @@ const init = (doc: HTMLElement | null) => {
     // 画布缩放 定位
     canvas.value.absolutePan({ x: 3000, y: 1700 });
     canvas.value.zoomToPoint({ x: canvas.value.getWidth() / 2, y: canvas.value.getHeight() / 2 }, 0.5);
+    staticCanvas.absolutePan({ x: 3000, y: 1700 });
+    staticCanvas.zoomToPoint({ x: canvas.value.getWidth() / 2, y: canvas.value.getHeight() / 2 }, 0.5);
+    
 
     //处理canvas整体缩放
     canvas.value.on('mouse:wheel', function (opt: { e: { deltaY: any; offsetX: any; offsetY: any; preventDefault: () => void; stopPropagation: () => void; }; }) {
         if (!canvas.value) return;
-
         let delta = opt.e.deltaY;
         let zoom = canvas.value.getZoom();
         zoom *= 0.999 ** delta;
@@ -163,9 +180,13 @@ const handleClick = (canvas: { value: any; }) => {
     height: 100%;
     width: 100%;
     overflow: auto;
-    .test2 {
-        position: absolute;
-        top: 0
+    #static {
+        position: flex;
+        top: 0;
+        z-index: 0;
     }
+    // #test {
+    //     z-index: 1;
+    // }
 }
 </style>

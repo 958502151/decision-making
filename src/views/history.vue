@@ -2,7 +2,9 @@
 import { ref, onMounted, watch } from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
+import userCounter from '@/store/counter';
 
+const counter = userCounter()
 const router = useRouter()
 
 // 模糊查询值
@@ -47,95 +49,25 @@ watch(currentPage, () => {
 const loading = ref<Boolean>(false)
 // 获取假数据
 const getList = () => {
+    // dataSource.value = []
     loading.value = true
     setTimeout(() => {
         loading.value = false
-        dataSource.value = [
-            {
-                id: 1,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 2,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 3,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 4,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 5,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 6,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 7,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 8,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 9,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-            {
-                id: 10,
-                date: '2023-02-23',
-                time: '16:23:00',
-                name: '受电弓挂异物',
-                createUser: '张志伟'
-            },
-        ]
+        dataSource.value = (counter.historyArray as any).filter((fil: any) => fil.name.search(searchValue.value) !== -1 || searchValue.value === '')
     }, 2000)
 }
 </script>
 
 <template>
     <div class="history">
-        <el-input v-model="searchValue" class="search" placeholder="搜案顶案/教语/规卓/案例" :prefix-icon="Search"></el-input>
+        <el-input @keyup.enter="getList()" v-model="searchValue" class="search" placeholder="搜案预案/规章/数据/案例" :prefix-icon="Search"></el-input>
 
         <div class="table">
-            <el-table max-height="26rem" v-loading="loading" empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource">
+            <el-table max-height="26rem" v-loading="loading" empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource.slice((currentPage - 1)*10, currentPage*10)">
                 <el-table-column v-for="(item, index) in tableColumn" :key="index" v-bind="item"/>
                 <el-table-column label="操作">
                     <template #default="scope">
-                        <el-button @click="() => router.push({path: '/makingView', query: {id: scope.row.id}})" class="btn" type="text"
+                        <el-button @click="() => router.push({path: '/makingView', query: {id: scope.row.id, yuan: scope.row.yuan}})" class="btn" type="text"
                         >查看</el-button
                         >
                     </template>
@@ -143,7 +75,7 @@ const getList = () => {
             </el-table>
 
             <div class="pagination">
-                <span>共计: 12条数据</span><el-pagination small background v-model:current-page="currentPage" :pager-count="4" layout="prev, pager, next" :total="11" />
+                <span>共计: {{ dataSource.length }}条数据</span><el-pagination small background v-model:current-page="currentPage" :pager-count="4" layout="prev, pager, next" :total="dataSource.length" />
             </div>
         </div>
     </div>
@@ -178,7 +110,7 @@ const getList = () => {
             .btn {
                 color: #38FFFF;
                 text-align: center;
-                font-family: Alibaba PuHuiTi 2.0;
+                font-family: 'Alibaba PuHuiTi 2.0';
                 font-size: 0.875rem;
                 font-style: normal;
                 font-weight: 500;
@@ -204,7 +136,7 @@ const getList = () => {
             align-items: center;
             color: #FFF;
             text-align: center;
-            font-family: Alibaba PuHuiTi 2.0;
+            font-family: 'Alibaba PuHuiTi 2.0';
             font-size: 0.75rem;
             font-style: normal;
             font-weight: 400;

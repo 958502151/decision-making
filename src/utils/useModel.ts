@@ -8,8 +8,10 @@ interface Option {
     message: string
     view?: Boolean
     callback: Function
-    size: number,
+    size: number
     current: number
+    ok: Boolean
+    left: Boolean
 }
 
 // 两图形y间隔值180，x间隔值440
@@ -88,7 +90,8 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
         fill: '#fff',
         originX: 'center',
         originY: 'center',
-        selectable: false
+        selectable: false,
+        fontFamily: 'Alibaba PuHuiTi 2.0'
     })
     let juxing: fabric.Group
     if(option.end) {
@@ -133,7 +136,8 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
             resolvue(false)
         })
     }
-    return { sure, message: option.message, type: 'rect' }
+    if(option.ok) sure()
+    return { sure, message: option.message, type: 2, ok: option.ok }
 }
 
 export default useArrowHeadRect;

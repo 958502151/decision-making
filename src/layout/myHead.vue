@@ -50,6 +50,11 @@ watch(active, (val) => {
   if(['start', 'view', 'history'].includes(val))
   router.push(val)
 })
+
+router.afterEach((to) => {
+  active.value = to.path.replaceAll('/', '')
+  // to and from are both route objects.
+})
 </script>
 
 <style lang="scss">

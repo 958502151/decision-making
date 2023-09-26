@@ -7,5 +7,6 @@ import 'element-plus/dist/index.css'
 import '@/style/common.css'
 import '@/style/style.scss'
 import elementPlus from 'element-plus'
+import pinia from '@/store/index.ts'
 
-createApp(App).use(router).use(elementPlus).mount('#app')
+createApp(App).use(router).use(elementPlus).use(pinia).mount('#app')
