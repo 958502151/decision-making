@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch } from 'vue'
-import { Search, Fold, Expand, Warning } from '@element-plus/icons-vue'
+import { Fold, Expand, Warning, CloseBold } from '@element-plus/icons-vue'
 import { fabric } from 'fabric'
 import line from '@/assets/line.svg'
 import useArrowHeadRect from '@/utils/useArrowHeadRect.ts'
@@ -267,6 +267,7 @@ const init = () => {
                 }
             })
         }
+        if(counter.historyArray.length !== 0)
         initLiu((counter.historyArray as any).find((fin: any) => fin.id == id).array, 80, 0)
 
         // let i = 0
@@ -328,7 +329,7 @@ const handleIsLeft = () => {
 
 // 保存
 const handleSure = () => {
-    (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '张志伟', yuan, name: yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'})
+    (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '管理员', yuan, name: yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'})
     ElMessage.success('确定成功')
 }
 </script>
@@ -341,7 +342,7 @@ const handleSure = () => {
         </div>
         <div class="box">
             <div class="left" v-show="isLeft">
-                <el-input v-model="searchValue" class="search" placeholder="搜案预案/规章/数据/案例" :prefix-icon="Search">
+                <el-input readonly v-model="searchValue" class="search">
                     <template #suffix>
                         <el-icon style="cursor: pointer;" @click="handleIsLeft"><Fold /></el-icon>
                     </template>
@@ -381,6 +382,7 @@ const handleSure = () => {
 
             <!-- 子流程 -->
             <div class="model" v-if="isModel">
+                <div class="title">{{ choose.option.text }}<el-icon style="cursor: pointer;" @click="isModel = false"><CloseBold /></el-icon></div>
                 <canvas ref="modelCanvas"></canvas>
             </div>
         </div>
@@ -397,6 +399,9 @@ const handleSure = () => {
     background: #08163c95;
     .title {
         // width: 100rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
         height: 2.75rem;
         background: linear-gradient(90deg, #165cff87 0%, rgba(22, 93, 255, 0.00) 100%);
         color: #FFF;
@@ -409,6 +414,7 @@ const handleSure = () => {
         .btn {
             color: #068897;
             margin-left: 2rem;
+            border-radius: 0;
         }
         
     }

@@ -11,6 +11,7 @@ const router = useRouter()
 interface listType {
     value: number
     label: string
+    disabled?: Boolean
 }
 
 interface demoType {
@@ -30,39 +31,45 @@ const selectValue = ref<number>(0)
 const list = ref<Array<listType>>([
     { value: 0, label: '全部预案' },
     { value: 2, label: '设备故障' },
-    { value: 3, label: '非正常行车' },
-    { value: 4, label: '灾害行车' },
-    { value: 5, label: '救援'},
-    { value: 6, label: '其他' }
+    { value: 3, label: '非正常行车', disabled: true },
+    { value: 4, label: '灾害行车', disabled: true },
+    { value: 5, label: '救援', disabled: true},
+    { value: 6, label: '其他', disabled: true }
 ])
 
 const secendSelectValue = ref<number>(0)
 const secendList: any = ({
+    0: [
+        { value: 0, label: '全部' }
+    ],
     2: [
         { value: 0, label: '全部'},
-        { value: 1, label: '出站信号灯绿黄灭灯灯' },
+        { value: 1, label: '出站信号灯绿黄灭灯灯', disabled: true },
         { value: 2, label: '出站信号机灭灯' },
-        { value: 3, label: '道岔失去表示发车（出站信号机不能开放）' },
-        { value: 4, label: '道岔失去表示发车（出站信号机自动恢复）' },
+        { value: 3, label: '道岔失去表示发车（出站信号机不能开放）', disabled: true },
+        { value: 4, label: '道岔失去表示发车（出站信号机自动恢复）', disabled: true },
         { value: 5, label: '道岔失去表示接车' },
-        { value: 6, label: '轨道电路红光带接车' },
-        { value: 7, label: '进站信号机故障' },
-        { value: 8, label: '列车冒进进站信号' },
-        { value: 9, label: '区间第一离去轨红光带发车' },
-        { value: 10, label: '区间一架通过信号机故障'}
+        { value: 6, label: '轨道电路红光带接车', disabled: true },
+        { value: 7, label: '进站信号机故障', disabled: true },
+        { value: 8, label: '列车冒进进站信号', disabled: true },
+        { value: 9, label: '区间第一离去轨红光带发车', disabled: true },
+        { value: 10, label: '区间一架通过信号机故障', disabled: true }
     ],
     3: [
         { value: 0, label: '全部'},
-        { value: 1, label: '反方向行车' }
+        { value: 1, label: '反方向行车', disabled: true }
     ],
     4: [
         { value: 0, label: '全部'},
-        { value: 1, label: '天气恶劣难以辨认信号' }
+        { value: 1, label: '天气恶劣难以辨认信号', disabled: true }
     ],
     5: [
         { value: 0, label: '全部'},
-        { value: 1, label: '分部运行' },
-        { value: 2, label: '机车救援' }
+        { value: 1, label: '分部运行', disabled: true },
+        { value: 2, label: '机车救援', disabled: true }
+    ],
+    6: [
+        { value: 0, label: '全部' },
     ]
 })
 
@@ -117,14 +124,14 @@ const getList = () => {
             <div class="select">
                 <span style="width: 4rem;">类型:</span>
                 <el-select v-model="selectValue">
-                    <el-option v-for="item in list" :key="item.value" :value="item.value" :label="item.label"/>
+                    <el-option v-for="item in list" :disabled="item.disabled" :key="item.value" :value="item.value" :label="item.label"/>
                 </el-select>
             </div>
             
-            <div class="select" v-show="[2, 3, 4, 5].includes(selectValue)">
+            <div class="select">
                 <span style="width: 4rem; margin-left: 2rem;">名称:</span>
                 <el-select v-model="secendSelectValue">
-                    <el-option v-for="item in secendList[selectValue]" :key="item.value" :value="item.value" :label="item.label"/>
+                    <el-option v-for="item in secendList[selectValue]" :key="item.value" :disabled="item.disabled" :value="item.value" :label="item.label"/>
                 </el-select>
             </div>
         </div>

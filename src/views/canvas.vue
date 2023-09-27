@@ -1,6 +1,7 @@
 <template>
     <el-scrollbar class="boxsss">
-        <canvas style="background-color: rgba(0,0,0,1);" width="5134" height="3167" id="myCanvas"></canvas>
+        <!-- <canvas style="background-color: rgba(0,0,0,1);" width="5134" height="3167" id="myCanvas"></canvas> -->
+        <iframe width="1800" height="960" src="http://192.168.3.47:8998"></iframe>
     </el-scrollbar>
 </template>
 

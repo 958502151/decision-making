@@ -345,7 +345,7 @@
                                                     "text": "使用手摇把",
                                                     "message": "使用手摇把将道岔摇至所需位置",
                                                     "type": 2,
-                                                    "end": true,
+                                                    "next": true,
                                                     "children": [
                                                         {
                                                             "text": "行检簿登销记",

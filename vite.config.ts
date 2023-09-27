@@ -13,7 +13,9 @@ export default defineConfig({
     ]
   },
 
-  plugins: [vue()],
+  plugins: [
+    vue(),
+  ],
 
   server: {
     host: '0.0.0.0',
@@ -24,4 +26,12 @@ export default defineConfig({
       '/api': '0.0.0.0:8000'
     }
   },
+
+  esbuild: {
+    pure: ['console.log'],
+  },
+
+  build: {
+    minify: true
+  }
 })

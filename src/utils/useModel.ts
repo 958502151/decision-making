@@ -12,6 +12,7 @@ interface Option {
     current: number
     ok: Boolean
     left: Boolean
+    next: Boolean
 }
 
 // 两图形y间隔值180，x间隔值440
@@ -49,12 +50,7 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
         gradientUnits: 'pixels', // pixels or pencentage 像素 或者 百分比
         coords: { x1: 0, y1: 0, x2: 140, y2: 0, r2: 2 }, // 至少2个坐标对（x1，y1和x2，y2）将定义渐变在对象上的扩展方式
         colorStops:[ // 定义渐变颜色的数组
-        { offset: 0, color: 'red' },
-        { offset: 0.2, color: 'orange' },
-        { offset: 0.4, color: 'yellow' },
-        { offset: 0.6, color: 'green' },
-        { offset: 0.8, color: 'blue' },
-        { offset: 1, color: 'purple' },
+        { offset: 0.6, color: '#4bff48' },
         ]
     })
     // 填充
@@ -72,6 +68,20 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     const line = new fabric.Line([160 + x, 100 + y, 160 + x, 160 + y], {
         stroke: '#165DFF',
         strokeWidth: 2,
+    })
+    
+    const next = new fabric.Line([160 + x, 100 + y, option.left ? 400 + x :  x - 80, 160 + y], {
+        stroke: '#165DFF',
+        strokeWidth: 2,
+    })
+    const nextHead = new fabric.Polygon([
+        {x: x - 85, y: 173 + y},
+        {x: x - 75, y: 163 + y},
+        {x: x - 85, y: 163 + y}
+    ], {
+    fill: '#165DFF',
+    stroke: '#165DFF',
+    angle: -60
     })
     // fab.add(line);
     const arrowHead = new fabric.Polygon([
@@ -96,6 +106,9 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     let juxing: fabric.Group
     if(option.end) {
         juxing = new fabric.Group([innerCircle, myText, spin, fill],{hasControls: false, hasBorders: false, selectable: false})
+    } else if(option.next) {
+        arrowHead.set(arrowHead)
+        juxing = new fabric.Group([innerCircle, next, nextHead, myText, spin, fill],{hasControls: false, hasBorders: false, selectable: false})
     } else {
         juxing = new fabric.Group([innerCircle, line, arrowHead, myText, spin, fill],{hasControls: false, hasBorders: false, selectable: false})
     }

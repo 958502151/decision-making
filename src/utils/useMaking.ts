@@ -95,7 +95,7 @@ const useMaking = (fab: any, point: Array<number>, option: Option) => {
     });
 
     const myText = new fabric.Textbox(option.text, {
-        width: 160,
+        width: 200,
         left: x + 160,
         top: y + 41,
         fontSize: 20,
