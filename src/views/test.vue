@@ -45,7 +45,7 @@ const init = (doc: HTMLElement | null) => {
     const m = () => {
         const n = buff.slice(i, i+500)
         n.forEach((item: any) => {
-            if(i-500 < 1000)
+            if(i-500 < 10000)
             canvas.value.add(item)
             else
             staticCanvas.add(item)

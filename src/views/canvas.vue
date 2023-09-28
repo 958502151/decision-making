@@ -1,98 +1,119 @@
 <template>
     <el-scrollbar class="boxsss">
-        <canvas style="background-color: rgba(0,0,0,1);" width="5134" height="3167" id="myCanvas"></canvas>
+        <div id="test"></div>
     </el-scrollbar>
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
 
+import Konva from 'konva'
+import { onMounted } from 'vue'
+
+let buff: any = []
 onMounted(() => {
-    nextTick(() => {
-        const canvas = document.getElementById('myCanvas') as HTMLElement
-        const ctx = (canvas as any).getContext('2d');
-        let isDragging = false
-        let lastX = 0
-        let lastY = 0
-        let scale = 1
-
-        init(canvas)
-
-        // 鼠标按下事件处理程序
-        const handleMouseDown = (e: any) => {
-            isDragging = true
-            lastX = e.clientX
-            lastY = e.clientY
-        }
-
-        // 鼠标移动事件处理程序
-        const handleMouseMove = (e: any) => {
-            if (isDragging) {
-                ctx.clearRect(0, 0, 5134, 3167)
-                const deltaX = e.clientX - lastX
-                const deltaY = e.clientY - lastY
-                lastX = e.clientX
-                lastY = e.clientY
-
-                // 移动canvas
-                ctx.translate(deltaX, deltaY)
-                draw(ctx)
-            }
-        }
-
-        // 鼠标松开事件处理程序
-        const handleMouseUp = () => {
-            isDragging = false
-        }
-
-        // 鼠标滚轮事件处理程序
-        const handleMouseWheel = (e: any) => {
-            e.preventDefault()
-            const delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)))
-
-            // 缩放canvas
-            if (delta > 0) {
-                scale *= 1.1
-            } else {
-                scale /= 1.1
-            }
-            ctx.clearRect(0, 0, 5134, 3167)
-            ctx.scale(scale, scale)
-            draw(ctx)
-        }
-
-        // 添加事件监听器
-        canvas.addEventListener('mousedown', handleMouseDown)
-        canvas.addEventListener('mousemove', handleMouseMove)
-        canvas.addEventListener('mouseup', handleMouseUp)
-        canvas.addEventListener('wheel', handleMouseWheel)
-        canvas.addEventListener('DOMMouseScroll', handleMouseWheel) // 兼容火狐浏览器
-    })
+    init()
 })
 
-const init = (doc: any) => {
-    const ctx = doc.getContext('2d')
-    ctx.width = 5143,
-    ctx.height = 3167,
-    ctx.backgroundColor = "rgba(0,0,0,1)",
-    ctx.scale(0.2, 0.2)
-    draw(ctx)
+const init = () => {
+    var stage = new Konva.Stage({
+        container: 'test',
+        width: document.getElementsByClassName('boxsss')[0].clientWidth,
+        height: document.getElementsByClassName('boxsss')[0].clientHeight,
+        draggable: true
+    });
+
+    var layer = new Konva.Layer();
+
+    buff = draw(layer)
+    buff.forEach((item: any) => {
+        layer.add(item)
+    })
+    stage.add(layer)
+
+    layer.scaleX(0.5)
+    layer.scaleY(0.5)
+    
+    stage.on('wheel', (e) => {
+        let max = 10
+        let min = 0.1
+        let step = 0.02
+
+        const { offsetX: x, offsetY: y } = e.evt
+        
+        let offsetX = (x -layer.offsetX()) * layer.scaleX() / (layer.scaleX() - step) - (x - layer.offsetX())
+        let offsetY = (y -layer.offsetY()) * layer.scaleY() / (layer.scaleY() - step) - (y - layer.offsetY())
+    
+        if((e.evt as any).wheelDelta) {
+            if((e.evt as any).wheelDelta > 0) {
+                if(layer.scaleX() < max && layer.scaleY() < max) {
+                    layer.scaleX(layer.scaleX() + step)
+                    layer.scaleY(layer.scaleY() + step)
+                    layer.move({x: -offsetX, y: -offsetY})
+                }
+            } else {
+                if(layer.scaleX() > min && layer.scaleY() > min) {
+                    layer.scaleX(layer.scaleX() - step)
+                    layer.scaleY(layer.scaleY() - step)
+                    layer.move({x: offsetX, y: offsetY})
+                }
+            }
+        }
+    })
 }
 
 // 批量绘制
-const draw = (ctx: any) => {
+const draw = (layer: any) => {
     let i = 0
+    const buff: any = []
     while(i !== 10000) {
-        ctx.beginPath()
-        // ctx.arc(Math.floor(Math.random()*5000), Math.floor(Math.random()*3000), 50, 0, Math.PI * 2, false)
-        ctx.arc(Math.floor(Math.random()*5000), Math.floor(Math.random()*3000), Math.random()*50 + 5, 0, Math.PI * 2, false)
-        ctx.fillStyle = `rgb(${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.random()})`
-        ctx.stroke = '#CAC7CA'
-        // ctx.stroke()
-        ctx.fill()
+        let color: string
+        let innerCircle = new Konva.Circle({
+            radius: Math.floor(Math.random()*50 + 5),
+            x: Math.floor(Math.random()*5000),
+            y: Math.floor(Math.random()*3000),
+            fill: `rgb(${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.random()})`,
+            // stroke: '#CAC7CA',
+            // listening: i < 1000
+        });
+        innerCircle.on('mouseover', () => {
+            color = innerCircle.attrs.fill
+            innerCircle.fill('yellow')
+            layer.batchDraw();
+        });
+        innerCircle.on('mouseout', () => {
+            innerCircle.fill(color)
+            layer.batchDraw();
+        });
+        innerCircle.on('mousedown', () => {
+            innerCircle.fill('yellow')
+            layer.batchDraw();
+            handleClick()
+        })
+        buff.push(innerCircle)
+        // layer.add(innerCircle)
         i++
     }
-    // ctx.fill()
+    return buff
+}
+
+const handleClick = () => {
+    let is = true
+    let m = () => {
+        setTimeout(() => {
+            if(is) {
+                buff.slice(0, 500).forEach((item: any) => {
+                    item.fill('#fff')
+                })
+            } else {
+                buff.slice(0, 500).forEach((item: any) => {
+                    item.fill('red')
+                })
+            }
+            is = !is
+            m()
+        }, 1000)
+    }
+    m()
 }
 </script>
 
@@ -100,11 +121,12 @@ const draw = (ctx: any) => {
 .boxsss {
     height: 100%;
     width: 100%;
-    overflow: auto;
-    position: absolute;
-    .test2 {
-        position: absolute;
-        top: 0
+    overflow: hidden;
+    #test {
+        overflow: hidden;
     }
+    // #test {
+    //     z-index: 1;
+    // }
 }
 </style>
