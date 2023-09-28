@@ -1,6 +1,8 @@
 <template>
     <el-scrollbar class="boxsss">
         <div id="test"></div>
+        <el-button @click="handleToJSON">序列化</el-button>
+        <el-button @click="handleToCanvas">反序列化</el-button>
     </el-scrollbar>
 </template>
 
@@ -14,8 +16,22 @@ onMounted(() => {
     init()
 })
 
+let stage: any
+let json: JSON
+const handleToJSON = () => {
+    json = stage.toJSON()
+    stage.clear()
+    console.log(json)
+    
+}
+
+const handleToCanvas = () => {
+    stage = Konva.Node.create(json, 'test');
+    
+    sf(stage)
+}
 const init = () => {
-    var stage = new Konva.Stage({
+    stage = new Konva.Stage({
         container: 'test',
         width: document.getElementsByClassName('boxsss')[0].clientWidth,
         height: document.getElementsByClassName('boxsss')[0].clientHeight,
@@ -32,8 +48,11 @@ const init = () => {
 
     layer.scaleX(0.5)
     layer.scaleY(0.5)
-    
-    stage.on('wheel', (e) => {
+    sf(layer)
+}
+
+const sf = (layer: any) => {
+    stage.on('wheel', (e: any) => {
         let max = 10
         let min = 0.1
         let step = 0.02
