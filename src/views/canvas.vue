@@ -87,6 +87,7 @@ const draw = (layer: any) => {
     while(i !== 10000) {
         let color: string
         let innerCircle = new Konva.Circle({
+            id: i as unknown as string,
             radius: Math.floor(Math.random()*50 + 5),
             x: Math.floor(Math.random()*5000),
             y: Math.floor(Math.random()*3000),

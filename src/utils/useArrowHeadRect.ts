@@ -71,8 +71,15 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     } else {
         juxing = new fabric.Group([innerCircle, line, arrowHead, myText, message],{hasControls: false, hasBorders: false, selectable: false})
     }
-    juxing.on('mousedown', () => {
-        if(!option.view)
+
+    let [lx, ly] = [0, 0]
+
+    juxing.on('mousedown', ({e}) => {
+        [lx, ly] = [e.offsetX, e.offsetY]
+    })
+
+    juxing.on('mouseup', ({e}) => {
+        if(!option.view && lx === e.offsetX && ly === e.offsetY)
         sure()
     })
 

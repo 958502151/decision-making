@@ -116,8 +116,15 @@ const useMaking = (fab: any, point: Array<number>, option: Option) => {
     lingXing = new fabric.Group([diamond, no2, yes, lineLeft2, lineDown, arrowDown, arrowLeft2, myText],{hasControls: false, hasBorders: false, selectable: false})
     else
     lingXing = new fabric.Group([diamond, no, yes, lineLeft, lineDown, arrowDown, arrowLeft, myText],{hasControls: false, hasBorders: false, selectable: false})
-    lingXing.on('mousedown', () => {
-        if(!option.view)
+
+    let [lx, ly] = [0, 0]
+
+    lingXing.on('mousedown', ({e}) => {
+        [lx, ly] = [e.offsetX, e.offsetY]
+    })
+
+    lingXing.on('mouseup', ({e}) => {
+        if(!option.view && lx === e.offsetX && ly === e.offsetY)
         sure()
     })
     fab.add(lingXing)
