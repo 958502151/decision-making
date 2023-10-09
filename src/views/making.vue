@@ -8,7 +8,7 @@ import useFabricWheelAndMove from '@/utils/useFabricWheelAndMove.ts'
 import useMaking from '@/utils/useMaking.ts'
 import useModel from '@/utils/useModel.ts'
 import { useRoute } from 'vue-router'
-import { array, guizhang, sjComlun, shuju } from '@/utils/testData.json'
+import { array, guizhang, sjComlun, shuju, sjTypeList } from '@/utils/testData.json'
 import useCounter from '@/store/counter.ts'
 import { ElMessage } from 'element-plus'
 
@@ -290,6 +290,7 @@ onMounted(() => {
     getGzList()
     getSjList()
     init()
+    tableHeight.value = document.getElementsByClassName('left')[0].clientHeight - 203
     // window.addEventListener('click', (e) => {
     // })
 })
@@ -306,16 +307,21 @@ const getGzList = () => {
 
 // 获取数据
 const dataSource = ref<Array<any>>([])
+    
+// 关联数据下拉框
+const sjType = ref<number>(1)
+// 表格头,后续可能更改从后台请求表格头
+const tableColumn = ref<any>()
+
 const getSjList = () => {
+    // debugger
+    tableColumn.value = (sjComlun as any)[sjType.value]
     loading.value = true
     setTimeout(()=>{
         loading.value = false
-        dataSource.value = (shuju as any)[yuan]
+        dataSource.value = (shuju as any)[sjType.value]
     }, 2000)
 }
-
-// 表格头,后续可能更改从后台请求表格头
-const tableColumn: Array<any> = (sjComlun as any)[yuan]
 
 //
 const handleIsLeft = () => {
@@ -332,6 +338,8 @@ const handleSure = () => {
     (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '管理员', yuan, name: yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'})
     ElMessage.success('确定成功')
 }
+
+const tableHeight = ref<number>(485)
 </script>
 
 <template>
@@ -353,7 +361,7 @@ const handleSure = () => {
                     <div  @click="() => light = 2" :class="light === 2 && 'light'" style="margin-left: 5rem">关联数据<img v-show="light === 2" :src="line"/></div>
                 </div>
 
-                <el-scrollbar v-show="light === 1" v-loading="loading" style="overflow-y: auto; height: 22rem; margin-top: 0.5rem;">
+                <el-scrollbar class="scrollbar" v-show="light === 1" v-loading="loading" style="overflow-y: auto; margin-top: 0.5rem;">
                     <div class="gz-box" v-for="(item, index) in gzList" :key="index">
                         <div class="gz-title">{{ item.title }}</div>
                         <div class="content" v-html="item.content"></div>
@@ -361,9 +369,13 @@ const handleSure = () => {
                 </el-scrollbar>
 
                 <div v-show="light === 2" v-loading="loading">
-                    <div class="sj-title">·{{yuan === '1' ? '出站信号机' : '道岔'}}</div>
+                    <div class="sj-title">·<!--{{yuan === '1' ? '出站信号机' : '道岔'}}-->
+                        <el-select @change="getSjList" size="small" v-model="sjType">
+                            <el-option v-for="(item, index) in (sjTypeList as any)[yuan]" :label="item.label" :value="item.value" :key="index"></el-option>
+                        </el-select>
+                    </div>
                     <div class="sj-content table">
-                        <el-table :max-height="310" empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource">
+                        <el-table :height="tableHeight" empty-text="没有数据" header-cell-class-name="header" cell-class-name="cell" row-class-name="row" :data="dataSource">
                             <el-table-column v-for="(item, index) in tableColumn" :key="index" v-bind="item"/>
                         </el-table>
                     </div>
@@ -423,7 +435,7 @@ const handleSure = () => {
         display: flex;
         .left {
             width: 27.5rem;
-            height: 32.5rem;
+            height: calc(100vh - 13rem);
             flex-shrink: 0;
             background-color: rgba(13, 64, 183, 0.1);
             color: rgba(255, 255, 255, 0.8);
@@ -459,28 +471,31 @@ const handleSure = () => {
                     line-height: normal;
                 }
             }
-            .gz-box {
-                width: 23rem;
-                flex-shrink: 0;
-                padding: 1rem 1.25rem 1rem 0.88rem;
-                background: rgba(22, 93, 255, 0.2);
-                margin: 1rem 1.25rem 1rem 1.25rem;
-                .gz-title {
-                    color: #38FFFF;
-                    font-family: 'Alibaba PuHuiTi 2.0';
-                    font-size: 1rem;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 1.375rem; /* 137.5% */
-                }
-                .content {
-                    color: #FFF;
-                    font-family: 'Alibaba PuHuiTi 2.0';
-                    font-size: 0.875rem;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 1.375rem; /* 157.143% */
-                    margin-top: 0.75rem;
+            .scrollbar {
+                height: calc(100vh - 23rem);
+                .gz-box {
+                    width: 23rem;
+                    flex-shrink: 0;
+                    padding: 1rem 1.25rem 1rem 0.88rem;
+                    background: rgba(22, 93, 255, 0.2);
+                    margin: 1rem 1.25rem 1rem 1.25rem;
+                    .gz-title {
+                        color: #38FFFF;
+                        font-family: 'Alibaba PuHuiTi 2.0';
+                        font-size: 1rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 1.375rem; /* 137.5% */
+                    }
+                    .content {
+                        color: #FFF;
+                        font-family: 'Alibaba PuHuiTi 2.0';
+                        font-size: 0.875rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 1.375rem; /* 157.143% */
+                        margin-top: 0.75rem;
+                    }
                 }
             }
             .warn {
@@ -544,11 +559,11 @@ const handleSure = () => {
         }
         .right {
             width: 100%;
-            height: 32.5rem;
+            height: calc(100vh - 13rem);
         }
         .model {
             width: 30%;
-            height: 30rem;
+            height: calc(100vh - 15rem);
             position: fixed;
             // background: rgba(0,0,0,0.8);
             border-radius: 1rem;
