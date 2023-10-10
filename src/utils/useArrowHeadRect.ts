@@ -30,7 +30,7 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
         stroke: '#165DFF',
         strokeWidth: 2,
     })
-    // fab.add(line);
+
     const arrowHead = new fabric.Polygon([
         {x: 161 + x, y: 162 + y},
         {x: 151 + x, y: 152 + y},
@@ -39,6 +39,8 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     fill: '#165DFF',
     stroke: '#165DFF',
     })
+
+    const jiantou = new fabric.Group([line, arrowHead],{hasControls: false, hasBorders: false, selectable: false})
 
     const message = new fabric.Textbox(option.message, {
         left: x + 160,
@@ -69,7 +71,7 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
     if(option.end) {
         juxing = new fabric.Group([innerCircle, myText, message],{hasControls: false, hasBorders: false, selectable: false})
     } else {
-        juxing = new fabric.Group([innerCircle, line, arrowHead, myText, message],{hasControls: false, hasBorders: false, selectable: false})
+        juxing = new fabric.Group([innerCircle, jiantou, myText, message],{hasControls: false, hasBorders: false, selectable: false})
     }
 
     let [lx, ly] = [0, 0]

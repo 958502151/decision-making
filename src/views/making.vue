@@ -11,13 +11,14 @@ import { useRoute } from 'vue-router'
 import { array, guizhang, sjComlun, shuju, sjTypeList } from '@/utils/testData.json'
 import useCounter from '@/store/counter.ts'
 import { ElMessage } from 'element-plus'
+import useShapeLocation from '@/utils/useShapeLocation'
 
 const counter = useCounter()
 const route = useRoute()
 const { type, id } = route.query
 const yuan = route.query.yuan as string
 
-const myArray = JSON.parse(JSON.stringify((array as any)[yuan]))
+const myArray = useShapeLocation(JSON.parse(JSON.stringify((array as any)[yuan])))
 
 // 模糊查询值
 const searchValue = ref<string>('')
@@ -314,7 +315,6 @@ const sjType = ref<number>(1)
 const tableColumn = ref<any>()
 
 const getSjList = () => {
-    // debugger
     tableColumn.value = (sjComlun as any)[sjType.value]
     loading.value = true
     setTimeout(()=>{
