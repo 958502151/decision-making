@@ -161,7 +161,7 @@ const useMaking = (fab: any, point: Array<number>, option: Option) => {
         })
     }
     if(option.ok) sure()
-    return { startAnimation, endAnimation, sure, type: 3 }
+    return { startAnimation, endAnimation, sure, type: 3, shape: lineDown }
 }
 
 export default useMaking

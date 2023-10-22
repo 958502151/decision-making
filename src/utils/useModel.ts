@@ -158,7 +158,7 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
         })
     }
     if(option.ok) sure()
-    return { sure, message: option.message, type: 2, ok: option.ok }
+    return { sure, message: option.message, type: 2, ok: option.ok, shape: innerCircle }
 }
 
 export default useArrowHeadRect;

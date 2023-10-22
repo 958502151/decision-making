@@ -33,7 +33,7 @@ const list = ref<Array<listType>>([
     { value: 3, label: '非正常行车', disabled: true },
     { value: 4, label: '灾害行车', disabled: true },
     { value: 5, label: '救援', disabled: true},
-    { value: 6, label: '其他', disabled: true }
+    { value: 6, label: '其他' }
 ])
 
 const secendSelectValue = ref<number>(0)
@@ -95,21 +95,37 @@ const getList = () => {
     setTimeout(() => {
         loading.value = false
         demoList.value = [
+            // {
+            //     image: test,
+            //     title: '出站信号机灭灯',
+            //     date: '更新于1个月前',
+            //     first: 2,
+            //     secend: 2,
+            //     id: 1
+            // },
+            // {
+            //     image: test,
+            //     title: '道岔失去表示接车',
+            //     date: '更新于1个月前',
+            //     first: 2,
+            //     secend: 5,
+            //     id: 2
+            // },
             {
                 image: test,
-                title: '出站信号机灭灯',
+                title: '抱闸',
                 date: '更新于1个月前',
-                first: 2,
-                secend: 2,
-                id: 1
+                first: 6,
+                secend: 0,
+                id: 3
             },
             {
                 image: test,
-                title: '道岔失去表示接车',
+                title: '受电弓挂异物',
                 date: '更新于1个月前',
-                first: 2,
-                secend: 5,
-                id: 2
+                first: 6,
+                secend: 0,
+                id: 4
             },
             ].filter(fil => (selectValue.value === 0 || fil.first === selectValue.value && (fil.secend === secendSelectValue.value || secendSelectValue.value === 0)) && (fil.title.search(searchValue.value) !== -1 || searchValue.value === ''))    }, 2000)
 }

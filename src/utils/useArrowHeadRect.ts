@@ -150,7 +150,7 @@ const useArrowHeadRect = (fab: any, point: Array<number>, option: Option) => {
         })
     }
     if(option.ok) sure()
-    return { startAnimation, endAnimation, sure, message: option.message, type: 1, ok: option.ok }
+    return { startAnimation, endAnimation, sure, message: option.message, type: 1, ok: option.ok, shape: innerCircle }
 }
 
 export default useArrowHeadRect;

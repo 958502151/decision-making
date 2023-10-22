@@ -8,7 +8,7 @@ import useFabricWheelAndMove from '@/utils/useFabricWheelAndMove.ts'
 import useMaking from '@/utils/useMaking.ts'
 import useModel from '@/utils/useModel.ts'
 import { useRoute } from 'vue-router'
-import { array, guizhang, sjComlun, shuju, sjTypeList } from '@/utils/testData.json'
+import { array, guizhang, sjComlun, shuju, sjTypeList, fuzhuxian } from '@/utils/testData.json'
 import useCounter from '@/store/counter.ts'
 import { ElMessage } from 'element-plus'
 
@@ -42,6 +42,8 @@ const handleModel = (e: any, item: any) => {
     choose = {...e, item}
     isModel.value = !isModel.value
 }
+// 缓存绘制图形
+const map: any = {}
 
 watch(isModel, (val) => {
     let fabs: any 
@@ -166,6 +168,9 @@ watch(isModel, (val) => {
     }
 })
 
+// 长线连接的点
+const linelist: Array<any> = []
+
 let fab: any
 // let ctx: CanvasRenderingContext2D
 // 初始化画布
@@ -184,24 +189,50 @@ const init = () => {
     if(type === '1') {
         const initLiu = (arr: any, x: number, y: number) => {
             let [cx, cy] = [x, y]
-            mk = !mk
+            // let mk = true
+            // mk = true
+            // mk = !mk
 
             arr.forEach((item: any) => {
                 switch (item.type) {
-                    case 1: { 
-                        useArrowHeadRect(fab, [cx, cy], {...item, callBack: (times: any) => {item.dateTime = times; item.ok = true}})
+                    case 1: {
+                        map[item.id] = useArrowHeadRect(fab, [cx, cy], {...item, callBack: (times: any) => {item.dateTime = times; item.ok = true}}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 2: {
-                        useModel(fab, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                        map[item.id] = useModel(fab, [cx, cy], { ...item, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 3: {
-                        useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {item.ok = true}, ok: item.ok })
-                        initLiu(item.children.yes, cx, cy + 200)
-                        initLiu(item.children.no, mk ? (cx + 440) : (cx - 440), cy + 20)
+                        // mk = item.left ? false : true
+                        map[item.id] = useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {item.ok = true}, ok: item.ok }).shape
+                        if(item.children.yes instanceof Array) {
+                            initLiu(item.children.yes, cx, cy + 200)
+                        } else {
+                            initLiu([], cx, cy + 200)
+                            if(item.point && item.point.yes) {
+                                linelist.push([[cx + 160,  cy + 180], [cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]]])
+                                linelist.push([[cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]], item.children.yes])
+                            } else
+                            linelist.push([[cx + 160, cy + 180], item.children.yes])
+                        }
+                        if(item.children.no instanceof Array) {
+                            initLiu(item.children.no, mk ? (cx + 440) : (cx - 440),  item.children.no[0].type !== 3? cy + 20 : cy)
+                        } else {
+                            initLiu([], mk ? (cx + 440) : (cx - 440), item.children.no[0].type !== 3? cy + 20 : cy)
+                            if(item.point && item.point.no) {
+                                linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], [cx + 425 + item.point.no[0], (item.children.no[0].type !== 3? cy + 65 : cy) + item.point.no[1]]])
+                                linelist.push([[cx + 425 + item.point.no[0] - 220, (item.children.no[0].type !== 3? cy + 163 : cy) + item.point.no[1]], item.children.no])
+                            }
+                            else
+                            linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], item.children.no])
+                        }
                         break;
                     }
                 }
@@ -215,24 +246,46 @@ const init = () => {
         */
     } else if(type === '2') {
         const initLiu = (arr: any, x: number, y: number) => {
-            mk = !mk
             let [cx, cy] = [x, y]
             arr.forEach((item: any) => {
                 switch (item.type) {
                     case 1: { 
-                        useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}})
+                        map[item.id] = useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 2: {
-                        useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0})
+                        map[item.id] = useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current: 0}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 3: {
-                        useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true })
-                        initLiu(item.children.yes, cx, cy + 200)
-                        initLiu(item.children.no, mk ? (cx + 440) : (cx - 440), cy + 20)
+                        map[item.id] = useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true }).shape
+                        if(item.children.yes instanceof Array) {
+                            initLiu(item.children.yes, cx, cy + 200)
+                        } else {
+                            initLiu([], cx, cy + 200)
+                            if(item.point && item.point.yes) {
+                                linelist.push([[cx + 160,  cy + 180], [cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]]])
+                                linelist.push([[cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]], item.children.yes])
+                            } else
+                            linelist.push([[cx + 160, cy + 180], item.children.yes])
+                        }
+                        if(item.children.no instanceof Array) {
+                            initLiu(item.children.no, mk ? (cx + 440) : (cx - 440),  item.children.no[0].type !== 3? cy + 20 : cy)
+                        } else {
+                            initLiu([], mk ? (cx + 440) : (cx - 440), item.children.no[0].type !== 3? cy + 20 : cy)
+                            if(item.point && item.point.no) {
+                                linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], [cx + 425 + item.point.no[0], (item.children.no[0].type !== 3? cy + 65 : cy) + item.point.no[1]]])
+                                linelist.push([[cx + 425 + item.point.no[0] - 220, (item.children.no[0].type !== 3? cy + 163 : cy) + item.point.no[1]], item.children.no])
+                            }
+                            else
+                            linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], item.children.no])
+                        }
                         break;
                     }
                 }
@@ -240,28 +293,49 @@ const init = () => {
         }
         initLiu(myArray, 80, 0)
     } else {
-        let buff: any= []
+        // let buff: any= []
         const initLiu = (arr: any, x: number, y: number) => {
             let [cx, cy] = [x, y]
-            mk = !mk
             arr.forEach((item: any) => {
                 switch (item.type) {
                     case 1: { 
-                        buff.push(useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}}))
+                        map[item.id] = useArrowHeadRect(fab, [cx, cy], {...item, view: true, callBack: () => {}}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 2: {
                         const current = item.children.filter((sub: any) => sub.ok).length
-                        buff.push(useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current}))
+                        map[item.id] = useModel(fab, [cx, cy], { ...item, view: true, size: item.children.length, callback: (e: any) => handleModel(e, item), current}).shape
                         cy += 180
+                        if(item.last)
+                        linelist.push([[cx + 160, cy - 20], item.last])
                         break;
                     }
                     case 3: {
-                        // mk = !mk
-                        buff.push(useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true }))
-                        initLiu(item.children.yes, cx, cy + 200)
-                        initLiu(item.children.no, mk ? cx + 440 : cx - 440, cy + 20)
+                        map[item.id] = useMaking(fab, [cx, cy + 20], { ...item, text: item.text, callback: () => {}, ok: item.ok, view: true }).shape
+                        if(item.children.yes instanceof Array) {
+                            initLiu(item.children.yes, cx, cy + 200)
+                        } else {
+                            initLiu([], cx, cy + 200)
+                            if(item.point && item.point.yes) {
+                                linelist.push([[cx + 160,  cy + 180], [cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]]])
+                                linelist.push([[cx + 160 + item.point.yes[0],  cy + 180 + item.point.yes[1]], item.children.yes])
+                            } else
+                            linelist.push([[cx + 160, cy + 180], item.children.yes])
+                        }
+                        if(item.children.no instanceof Array) {
+                            initLiu(item.children.no, mk ? (cx + 440) : (cx - 440),  item.children.no[0].type !== 3? cy + 20 : cy)
+                        } else {
+                            initLiu([], mk ? (cx + 440) : (cx - 440), item.children.no[0].type !== 3? cy + 20 : cy)
+                            if(item.point && item.point.no) {
+                                linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], [cx + 425 + item.point.no[0], (item.children.no[0].type !== 3? cy + 65 : cy) + item.point.no[1]]])
+                                linelist.push([[cx + 425 + item.point.no[0] - 220, (item.children.no[0].type !== 3? cy + 163 : cy) + item.point.no[1]], item.children.no])
+                            }
+                            else
+                            linelist.push([[cx + 425,  item.children.no[0].type !== 3? cy + 65 : cy], item.children.no])
+                        }
                         break;
                     }
                 }
@@ -291,6 +365,42 @@ onMounted(() => {
     getSjList()
     init()
     tableHeight.value = document.getElementsByClassName('left')[0].clientHeight - 203
+    const drawLine = (point1: Array<[number, number]>, point2: Array<[number, number]>) => {
+        let dian
+        if(point1[1] < point2[1])
+        dian = [{x: point1[0], y: point1[1]}, {x: point1[0], y: point2[1]}, {x: point2[0], y: point2[1]}]
+        else 
+        dian = [{x: point1[0], y: point1[1]}, {x: point2[0] as any - 220, y: point1[1]}, {x: point2[0] as any - 220, y: point2[1] as any + 100}]
+        const point = new fabric.Polyline(dian as any, {
+            stroke: '#165DFF',
+            strokeWidth: 2,
+            fill: 'transparent',
+            selectable: false,
+            evented: false
+        })
+        fab.add(point)
+    }
+    linelist.forEach(item => {
+        if(item[1] instanceof Array) {
+            drawLine(item[0] , item[1])
+        }
+        else {
+            const point = [map[item[1]]?.group.get('left') + 160, map[item[1]]?.group.get('top') - 50]
+            drawLine(item[0], point)
+        }
+    })
+    if((fuzhuxian  as any)[yuan]) {
+        (fuzhuxian  as any)[yuan].forEach((item: any) => {
+            const point = new fabric.Polyline(item as any, {
+            stroke: '#165DFF',
+            strokeWidth: 2,
+            fill: 'transparent',
+            selectable: false,
+            evented: false
+        })
+        fab.add(point)
+        })
+    }
     // window.addEventListener('click', (e) => {
     // })
 })
@@ -335,7 +445,7 @@ const handleIsLeft = () => {
 
 // 保存
 const handleSure = () => {
-    (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '管理员', yuan, name: yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'})
+    (counter.historyArray as any).push({array: myArray, id: counter.historyArray.length + 1, date: new Date().toLocaleString().split(' ')[0].replaceAll('/', '-'), time: new Date().toLocaleString().split(' ')[1], createUser: '管理员', yuan, name: ['出站信号机灭灯', '道岔失去表示接车', '抱闸', '受电弓挂异物'][yuan as any - 1]})
     ElMessage.success('确定成功')
 }
 
@@ -345,7 +455,7 @@ const tableHeight = ref<number>(485)
 <template>
     <div class="making">
         <div class="title">
-            <span>{{yuan === '1' ? '出站信号机灭灯' : '道岔失去表示接车'}}</span>
+            <span>{{['出站信号机灭灯', '道岔失去表示接车', '抱闸', '受电弓挂异物'][yuan as any - 1]}}</span>
             <el-button v-if="type === '1'" class="btn" color="#38FFFF" @click="handleSure" type="success">保存案例</el-button>
         </div>
         <div class="box">
@@ -371,7 +481,7 @@ const tableHeight = ref<number>(485)
                 <div v-show="light === 2" v-loading="loading">
                     <div class="sj-title">·<!--{{yuan === '1' ? '出站信号机' : '道岔'}}-->
                         <el-select @change="getSjList" size="small" v-model="sjType">
-                            <el-option v-for="(item, index) in (sjTypeList as any)[yuan]" :label="item.label" :value="item.value" :key="index"></el-option>
+                            <el-option v-for="(item, index) in (sjTypeList as any)[1]" :label="item.label" :value="item.value" :key="index"></el-option>
                         </el-select>
                     </div>
                     <div class="sj-content table">

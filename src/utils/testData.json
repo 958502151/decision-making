@@ -1,180 +1,253 @@
 {
     "array": {
-        "1": [
+        "3": [
         {
-            "text": "FAS通知",
-            "message": "设备故障，出站信号机灭灯",
-            "type": 1
+            "text": "故障匹配",
+            "message": "抱闸",
+            "type": 1,
+            "id": "1"
         },
         {
-            "text": "汇报通知",
+            "text": "严重抱闸",
             "message": "值班干部，电务，列车调度员",
-            "type": 2,
-            "children": [
-                {
-                    "text": "FAS通知",
-                    "message": "通知值班干部，出站信号机故障，影响发车，上岗盯控",
-                    "type": 1
-                },
-                {
-                    "text": "FAS通知",
-                    "message": "通知电务，出站信号故障，现场检查",
-                    "type": 1
-                },
-                {
-                    "text": "FAS通知",
-                    "message": "通知列车调度员，出站信号机故障，影响发车",
-                    "end": true,
-                    "type": 1
-                }
-            ]
-        },
-        {
-            "text": "行检簿登销记",
-            "message": "登记信号机故障，影响发车",
-            "type": 1
-        },
-        {
-            "text": "电务现场检查，故障暂不能修复，信号机停用",
-            "message": "外勤，值班干部，工务，电务，列车调度员",
             "type": 3,
+            "id": "2",
             "children": {
                 "yes": [
                     {
                         "text": "FAS通知",
-                        "message": "通知列车调度员，电务现场检查，故障暂不能修复，信号机停用，使用绿色许可证发车",
-                        "type": 1
-                    },{
-                        "text": "准备发车进路",
-                        "message": "准备发车进路",
-                        "type": 2,
-                        "children": [
-                            {
-                                "text": "车务终端",
-                                "message": "发车进路上所有道岔搬动至所需位置",
-                                "type": 1
-                            },
-                            {
-                                "text": "车务终端",
-                                "message": "发车进路上所有道岔单锁",
-                                "type": 1,
-                                "end": true
-                            }
-                        ]
-                    },{
-                        "text": "办理发车凭证",
-                        "message": "办理绿色许可证发车",
-                        "type": 2,
-                        "children": [
-                            {
-                                "text": "凭证填写",
-                                "message": "填写绿色许可证，加盖站名印",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知外勤，核对绿色许可证",
-                                "type": 1
-                            },
-                            {
-                                "text": "现场反馈",
-                                "message": "绿色许可证核对无误",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知外勤，将绿色许可证交于司机",
-                                "type": 1,
-                                "end": true
-                            }
-                        ]
-                    },{
-                        "text": "办理发车",
-                        "message": "具备发车条件后，办理发车",
-                        "type": 2,
-                        "children": [
-                            {
-                                "text": "FAS通知",
-                                "message": "通知外勤，检查是否具备发车条件",
-                                "type": 1
-                            },
-                            {
-                                "text": "现场反馈",
-                                "message": "具备发车条件",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知司机，车机联控，x次x站x道发车进路好了",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知外勤，x次x站x道发车",
-                                "type": 1,
-                                "end": true
-                            }
-                        ]
-                    },{
-                        "text": "出发报点",
-                        "message": "出发报点",
-                        "type": 2,
-                        "children": [
-                            {
-                                "text": "车务终端",
-                                "message": "行车日志人工报点",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知车站值班员，向邻站发车报点",
-                                "type": 1
-                            },
-                            {
-                                "text": "FAS通知",
-                                "message": "通知列车调度员，出发报点",
-                                "type": 1,
-                                "end": true
-                            }
-                        ]
-                    },{
-                        "text": "车务终端",
-                        "message": "解锁发车进路上所有道岔",
+                        "message": "通知司机，故障列车合适地点常用制动停车",
                         "type": 1,
-                        "end": true
-                    }
-                ],
-                "no": [
-                    {
-                        "text": "FAS通知",
-                        "message": "通知列车调度员，电务设备故障修复，正常发车",
-                        "type": 1
+                        "id": "3"
                     },
                     {
-                        "text": "正常发车",
-                        "message": "确认手摇把正常",
+                        "text": "扣停列车",
+                        "message": "扣停本线列车",
                         "type": 2,
-                        "end": true,
+                        "id": "4",
                         "children": [
                             {
-                                "text": "车务终端",
-                                "message": "开放信号，排列发车进路",
+                                "text": "运行图",
+                                "message": "后续列车通过变到开",
                                 "type": 1
                             },
                             {
-                                "text": "FAS通知",
-                                "message": "通知司机，联控司机，电务设备故障修复，正常发车",
+                                "text": "运行图",
+                                "message": "调整计划后下达",
                                 "type": 1
                             },
+                     
+                     
                             {
                                 "text": "FAS通知",
-                                "message": "X次x道发车",
-                                "end": true,
-                                "type": 1
+                                "message": "通知车站值班员，扣停后续列车",
+                                "type": 1,
+                                "end": true
                             }
                         ]
+                    },
+                    {
+                        "text": "汇报通知",
+                        "message": "按规第X条",
+                        "type": 2,
+                        "id": "5",
+                        "children": [
+                            {
+                                "text": "FAS通知",
+                                "message": "通知值班主任",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知计划调度",
+                                "type": 1
+                            },
+                            {
+                                "text": "FAS通知",
+                                "message": "通知车站值班员",
+                                "type": 1,
+                                "end": true
+                            }
+                        ]
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知车站值班员，列检（车站人员）现场检查",
+                        "type": 1,
+                        "id": "6"
+                    },
+                    {
+                        "text": "列车(车站人员)便乘列车",
+                        "message": "值班干部，电务，列车调度员",
+                        "type": 3,
+                        "id": "7",
+                        "children": {
+                            "yes": [
+                                {
+                                    "text": "人员便乘",
+                                    "message": "列检（车站人员）便乘进入区间检查",
+                                    "type": 2,
+                                    "id": "8",
+                                    "children": [
+                                        {
+                                            "text": "FAS通知",
+                                            "message": "通知车站值班员，列检（车站人员）便乘列车",
+                                            "type": 1
+                                        },
+                                        {
+                                            "text": "运行图",
+                                            "message": "故障列车区间停车",
+                                            "type": 1,
+                                            "end": true
+                                        }
+                                    ]
+                                },
+                                {
+                                    "text": "现场回复故障车辆无异状，继续运行",
+                                    "message": "值班干部，电务，列车调度员",
+                                    "type": 3,
+                                    "id": "9",
+                                    "children": {
+                                        "no": [
+                                            {
+                                                "text": "现场回复故障车辆关门车处理，继续运行",
+                                                "message": "值班干部，电务，列车调度员",
+                                                "type": 3,
+                                                "id": "10",
+                                                "children": {
+                                                    "no": [
+                                                        {
+                                                            "text": "现场回复故障车辆关门车处理，限速运行",
+                                                            "message": "值班干部，电务，列车调度员",
+                                                            "type": 3,
+                                                            "id": "11",
+                                                            "children": {
+                                                                "yes": [
+                                                                    {
+                                                                        "text": "调度命令",
+                                                                        "message": "下达调度命令：模板51.列车中挂有限速的机车，车辆",
+                                                                        "id": "12",
+                                                                        "type": 1
+                                                                    },
+                                                                    {
+                                                                        "text": "运行图",
+                                                                        "message": "故障列车区间停车",
+                                                                        "id": "13",
+                                                                        "type": 1
+                                                                    },
+                                                                    {
+                                                                        "text": "恢复行车",
+                                                                        "message": "放行扣停行车",
+                                                                        "id": "14",
+                                                                        "type": 2,
+                                                                        "children": [
+                                                                            {
+                                                                                "text": "运行图",
+                                                                                "message": "后续列车到开变",
+                                                                                "type": 1
+                                                                            },
+                                                                            {
+                                                                                "text": "运行图",
+                                                                                "message": "调整计划并下达",
+                                                                                "type": 1
+                                                                            },
+                                                                            {
+                                                                                "text": "FAS通知",
+                                                                                "message": "通知车站值班员，放行后续列车",
+                                                                                "type": 1,
+                                                                                "end": true
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "text": "安监报",
+                                                                        "message": "填写按监报",
+                                                                        "id": "15",
+                                                                        "type": 1,
+                                                                        "end": true
+                                                                    }
+                                                                ],
+                                                                "no": [
+                                                                    {
+                                                                        "text": "现场回复不能继续运行",
+                                                                        "message": "",
+                                                                        "type": 3,
+                                                                        "id": "16",
+                                                                        "children": {
+                                                                            "yes": [
+                                                                                {
+                                                                                    "text": "等待维修人员处理",
+                                                                                    "message": "等待维修人员处理",
+                                                                                    "type": 1,
+                                                                                    "end": true
+                                                                                }
+                                                                            ],
+                                                                            "no": [
+                                                                                {
+                                                                                    "text": "救援故障列车",
+                                                                                    "type": 2,
+                                                                                    "id": "17",
+                                                                                    "last": "14",
+                                                                                    "message": "救援故障列车",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "text": "调度命令",
+                                                                                            "message": "封锁区间：模板18.封锁区间",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "运行图",
+                                                                                            "message": "画救援列车运行线",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "运行图",
+                                                                                            "message": "下达阶段计划",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "调度命令",
+                                                                                            "message": "开行救援列车：模板23.向封锁区间开行救援列车（适用于救援列车进行救援）",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "现场反馈",
+                                                                                            "message": "救援列车到达车站",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "调度命令",
+                                                                                            "message": "开通区间：模板96.开通封锁区间",
+                                                                                            "type": 1
+                                                                                        },
+                                                                                        {
+                                                                                            "text": "运行图",
+                                                                                            "message": "绘制区间封锁标志",
+                                                                                            "type": 1,
+                                                                                            "end": true
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "yes": "14"
+                                                }
+                                            }
+                                        ],
+                                        "yes": "14"
+                                    }
+                                }
+                            ],
+                            "no": "9"
+                        }
                     }
-                ]
+                ],
+                "no": "5"
             }
         }
         ],
@@ -416,25 +489,584 @@
                     ]
                 }
             }
+        ],
+        "1": [
+            {
+                "text": "FAS通知",
+                "message": "通知司机，进站列车机外停车",
+                "type": 1
+            },
+            {
+                "text": "汇报通知",
+                "message": "扳道员，值班干部，工务，电务，列车调度员",
+                "type": 2,
+                "children": [
+                    {
+                        "text": "FAS通知",
+                        "message": "通知扳道员，道岔失表，现场检查，确认故障道岔开通位置",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知值班干部，道岔失表，影响接车，上岗盯控",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知工务，道岔失表，现场检验",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知电务，道岔失表，现场检查",
+                        "type": 1
+                    },
+                    {
+                        "text": "FAS通知",
+                        "message": "通知列车调度员，道岔失表，影响接车",
+                        "end": true,
+                        "type": 1
+                    }
+                ]
+            },{
+                "text": "行检簿登销记",
+                "message": "登记道岔失表，影响接车",
+                "type": 1
+            },{
+                "text": "工务现场检查，设备正常，不影响运行",
+                "message": "外勤，值班干部，工务，电务，列车调度员",
+                "type": 3,
+                "children": {
+                    "yes": [
+                        {
+                            "text": "电务现场检查，设备故障，暂不能修复",
+                            "message": "外勤，值班干部，工务，电务，列车调度员",
+                            "type": 3,
+                            "left": true,
+                            "children": {
+                                "yes": [
+                                    {
+                                        "text": "FAS通知",
+                                        "message": "通知列车调度员，工务设备正常，不影响运行，电务设备故障，暂不能修复，使用引导信号接车",
+                                        "type": 1
+                                    },
+                                    {
+                                        "text": "故障道岔是否在所需位置",
+                                        "message": "外勤，值班干部，工务，电务，列车调度员",
+                                        "type": 3,
+                                        "children": {
+                                            "yes": [
+                                                {
+                                                    "text": "准备接车进路",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，确认故障道岔开通位置及加锁状态",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "接车进路上所有道岔搬动至所需位置",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "登记使用引导总锁，引导按钮",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "使用引导总锁按钮",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "办理引导",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "办理接车",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知外勤，x次接近，x道停车",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知司机，车机联控，引导接车，注意引导信号",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，x次接近，x道停车",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "到达报点",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "children": [
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "行车日志人工报点",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知列车调度员，到达报点",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                },{
+                                                    "text": "解锁接车进路",
+                                                    "message": "按照正常接车手续",
+                                                    "type": 2,
+                                                    "end": true,
+                                                    "children": [
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，解锁故障道岔",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "登记使用引导总锁解锁进路",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "车务终端",
+                                                            "message": "引导总锁解锁进路",
+                                                            "type": 1,
+                                                            "end": true
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "no": [
+                                                {
+                                                    "text": "使用手摇把",
+                                                    "message": "使用手摇把将道岔摇至所需位置",
+                                                    "type": 2,
+                                                    "next": true,
+                                                    "children": [
+                                                        {
+                                                            "text": "行检簿登销记",
+                                                            "message": "道岔失表，领取手摇把现场准备进路",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，行车室领取手摇把",
+                                                            "type": 1
+                                                        },
+                                                        {
+                                                            "text": "FAS通知",
+                                                            "message": "通知扳道员，准备接车进路，将故障道岔摇至所需位置并加锁",
+                                                            "end": true,
+                                                            "type": 1
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "no": [
+                                    {
+                                        "text": "FAS通知",
+                                        "message": "通知列车调度员，工务设备正常，电务设备已修复",
+                                        "type": 1
+                                    },{
+                                        "text": "正常接车",
+                                        "message": "按照正常接车手续",
+                                        "type": 2,
+                                        "end": true,
+                                        "children": [
+                                            {
+                                                "text": "车务终端",
+                                                "message": "开放信号，排列接车进路",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知外勤，X次x道接车",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知司机，车机联控，工务设备正常、电务设备故障修复，正常接车",
+                                                "end": true,
+                                                "type": 1
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "no": [
+                        {
+                            "text": "FAS通知",
+                            "message": "通知司机，工务设备故障，影响接车",
+                            "type": 1
+                        },{
+                            "text": "FAS通知",
+                            "message": "通知列车调度员，工务设备故障，影响接车",
+                            "type": 1,
+                            "end": true
+                        }
+                    ]
+                }
+            }
+        ],
+        "4": [
+            {
+                "text": "故障匹配",
+                "message": "非正常行车",
+                "id": "1",
+                "type": 1
+            },
+            {
+                "text": "现场报告是否影响邻线",
+                "message": "",
+                "id": "2",
+                "type": 3,
+                "children": {
+                    "no": [
+                        {
+                            "text": "扣停本线列车",
+                            "message": "扣停本线列车",
+                            "id": "3",
+                            "type": 2,
+                            "last": "",
+                            "children": [
+                                {
+                                    "text": "运行图",
+                                    "message": "后续列车通过变到开",
+                                    "type": 1
+                                },{
+                                    "text": "运行图",
+                                    "message": "调整计划后下达",
+                                    "type": 1
+                                },{
+                                    "text": "FAS通知",
+                                    "message": "通知车站值班员，扣停后续列车",
+                                    "type": 1,
+                                    "end": true
+                                }
+                            ]
+                        },
+                        {
+                            "text": "通知汇报",
+                            "message": "通知车站值班员，司机",
+                            "id": "4",
+                            "type": 2,
+                            "children": [
+                                {
+                                    "text": "FAS通知",
+                                    "message": "通知车站值班员",
+                                    "type": 1,
+                                    "end": true
+                                },
+                                {
+                                    "text": "FAS通知",
+                                    "message": "通知司机",
+                                    "type": 1,
+                                    "end": true
+                                }
+                            ]
+                        },
+                        {
+                            "text": "司机下车目视检查后回复，受电弓无明显损坏，请求换弓",
+                            "message": "",
+                            "id": "5",
+                            "type": 3,
+                            "point": { "yes": [0, 1140] },
+                            "children": {
+                                "no": [
+                                    {
+                                        "text": "现场反馈",
+                                        "message": "司机下车检查后不确定原因需登顶检查处理",
+                                        "type": 1,
+                                        "id": "6"
+                                    },
+                                    {
+                                        "text": "登顶检查",
+                                        "message": "登顶检查",
+                                        "id": "7",
+                                        "type": 2,
+                                        "children": [
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知司机降弓",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "现场反馈",
+                                                "message": "已降弓可停电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知供电调停电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "调度命令",
+                                                "message": "发送停电调令：模板134.准许接触网有计划停电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "供电反馈",
+                                                "message": "已经停电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "调度命令",
+                                                "message": "发送停电调令：模板139.正线、到发线接触网停电后准许登机车(车辆)顶部作业",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知司机已停电可登顶",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "现场反馈",
+                                                "message": "登顶处理故障完毕可送电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知供电调送电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "调度命令",
+                                                "message": "发送送电调令：模板135.接触网送电",
+                                                "type": 1
+                                            },
+                                            {
+                                                "text": "FAS通知",
+                                                "message": "通知司机升弓",
+                                                "type": 1,
+                                                "end": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "text": "司机登顶检查后回复，需要供电部门检查接触网设备",
+                                        "message": "",
+                                        "type": 3,
+                                        "id": "8",
+                                        "point": { "no": [660, 0] },
+                                        "children": {
+                                            "no": "14",
+                                            "yes": [
+                                                {
+                                                    "text": "FAS通知",
+                                                    "message": "通知供电调度员，检查设备",
+                                                    "type": 1,
+                                                    "id": "9"
+                                                },
+                                                {
+                                                    "text": "供电回复本线需限速运行",
+                                                    "message": "",
+                                                    "id": "10",
+                                                    "type": 3,
+                                                    "children": {
+                                                        "no": [
+                                                            {
+                                                                "text": "供电回复本线需降弓运行",
+                                                                "message": "",
+                                                                "type": 3,
+                                                                "id": "11",
+                                                                "children": {
+                                                                    "no": "14",
+                                                                    "yes": [
+                                                                        {
+                                                                            "text": "调度命令",
+                                                                            "message": "后续列车降弓：模板140.接触网故障及电力机车降弓运行",
+                                                                            "id": "12",
+                                                                            "type": 1
+                                                                        },
+                                                                        {
+                                                                            "text": "司机登顶检查后回复，本列需要换弓",
+                                                                            "message": "",
+                                                                            "id": "14",
+                                                                            "type": 3,
+                                                                            "children": {
+                                                                                "no": [
+                                                                                    {
+                                                                                        "text": "本列能否继续运行",
+                                                                                        "message": "",
+                                                                                        "id": "15",
+                                                                                        "type": 3,
+                                                                                        "children": {
+                                                                                            "no": [
+                                                                                                {
+                                                                                                    "text": "救援",
+                                                                                                    "message": "技规第X条",
+                                                                                                    "type": 2,
+                                                                                                    "id": "16",
+                                                                                                    "children": [
+                                                                                                        {
+                                                                                                            "text": "调度命令",
+                                                                                                            "message": "封锁区间：模板18.封锁区间",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "运行图",
+                                                                                                            "message": "画救援列车运行线",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "运行图",
+                                                                                                            "message": "下达阶段计划",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "调度命令",
+                                                                                                            "message": "开行救援列车：模板23.向封锁区间开行救援列车（适用于救援列车进行救援）",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "现场反馈",
+                                                                                                            "message": "救援列车到达车站",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "调度命令",
+                                                                                                            "message": "开通区间：模板96.开通封锁区间",
+                                                                                                            "type": 1
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "text": "运行图",
+                                                                                                            "message": "绘制区间封锁标识",
+                                                                                                            "type": 1,
+                                                                                                            "end": true
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                {
+                                                                                                    "text": "现场反馈",
+                                                                                                    "message": "救援完毕",
+                                                                                                    "type": 1,
+                                                                                                    "id": "17"
+                                                                                                }
+                                                                                            ],
+                                                                                            "yes": [
+                                                                                                {
+                                                                                                    "text": "恢复行车",
+                                                                                                    "message": "放行扣停行车",
+                                                                                                    "type": 1,
+                                                                                                    "id": "18"
+                                                                                                },
+                                                                                                {
+                                                                                                    "text": "供电检查处理完毕后，申请取消限速",
+                                                                                                    "message": "",
+                                                                                                    "id": "19",
+                                                                                                    "type": 3,
+                                                                                                    "children": {
+                                                                                                        "no": [
+                                                                                                            {
+                                                                                                                "text": "安监报填记",
+                                                                                                                "message": "",
+                                                                                                                "id": "20",
+                                                                                                                "type": 1,
+                                                                                                                "end": true
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "yes": [
+                                                                                                            {
+                                                                                                                "text": "调度命令",
+                                                                                                                "message": "后续列车恢复：模板50.线路提速或恢复常速",
+                                                                                                                "id": "21",
+                                                                                                                "type": 1,
+                                                                                                                "last": "20"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                ],
+                                                                                "yes": "15"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "yes": [
+                                                            {
+                                                                "text": "调度命令",
+                                                                "message": "后续列车限速：模板48.站内或区间临时限速",
+                                                                "type": 1,
+                                                                "id": "13"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "yes": "15"
+                            }
+                        }
+                    ],
+                    "yes": [
+                        {
+                            "text": "扣停邻线列车",
+                            "message": "扣停邻线列车",
+                            "last": "3",
+                            "id": "22",
+                            "type": 2,
+                            "children": [
+                                {
+                                    "text": "运行图",
+                                    "message": "后续列车通过变到开",
+                                    "type": 1
+                                },{
+                                    "text": "运行图",
+                                    "message": "调整计划后下达",
+                                    "type": 1
+                                },{
+                                    "text": "FAS通知",
+                                    "message": "通知车站值班员，扣停后续列车",
+                                    "type": 1,
+                                    "end": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         ]
     },
     "guizhang": {
-        "1": [
+        "3": [
             {
-                "title": "普铁技规第365条",
-                "content": "出站信号机发生故障时，除按规定交递行车凭证外，对通过列车应预告司机，并显示通过手信号。装有进路表示器或发车线路表示器的出站信号机，当该表示器不良时，由办理发车人员通知司机后，列车凭出站信号机的显示出发。"
-            },{
-                "title": "普铁技规第403条",
-                "content": "车站值班员发现或接到行车设备故障的报告后，应立即通知设备管理单位相关人员，并在《行车设备检查登记簿》内登记。"
-            },{
-                "title": "普铁技规第315条",
-                "content": "自动闭塞区段遇下列情况发车的行车凭证见第32表。"
+                "title": "《技规》第371条",
+                "content": "列车（动车组列车除外）运行途中发生车辆故障应急处理：<br>1.发现客车车辆轮轴故障、车体下沉（倾斜）、车辆剧烈振动等危及行车安全的情况时，须立即采取停车措施。由车辆乘务员检查，对抱闸车辆应关闭截断塞门，排除工作风缸和副风缸中的余风，确认安全无误后，方可继续运行；如车轮踏面损坏超过限度或车辆故障不能继续运行时，应甩车处理。<br>2.列车调度员接到热轴报告后，应按热轴预报等级要求果断处理。必要时，立即安排停车检查（司机应采用常用制动，列车停车后由车辆乘务员负责检查，无车辆乘务员的由司机确认能否继续安全运行）或就近站甩车处理。<br>3.遇客车安全监控系统报警或其他故障需要列车限速运行时，车辆乘务员应使用列车无线调度通信设备通知司机，司机根据要求限速运行并报告车站值班员（列车调度员）"
             }
         ],
-        "2": [
+        "4": [
             {
-                "title": "朔黄行规第125条",
-                "content": "分散自律控制模式中心操作方式下非正常情况的处理规定</br>1.遇站内轨道电路出现红光带、道岔转换不到位、不转换或失去表示时，助理调度员须在《行车设备检查登记簿》内登记，通知车站值班员派人检查、处理。 车站值班员得到现场检查确认的汇报后，及时将检查结果向助理调度员汇报。助理调度员根据现场汇报的情况，确认故障区段（线路）无障碍物及进路正确，并对进路上故障区域内的道岔施行单独锁闭后，方可组织办理接发列车。必要时转为车站操作方式或转入非常站控模式，由车站组织办理接发列车。"
+                "title": "《行规》第154条",
+                "content": "接触网停送电的规定<br>1.施工、维修（含停电配合）需接触网停电时，供电调度员根据作业计划，向列车调度员提交停电申请，办理停电签认手续。作业结束送电时，供电调度员确认具备送电条件后，办理送电手续。<br>2.设备故障抢修（含停电配合）需接触网停电时，供电调度员立即了解供电设备损坏、影响范围等情况，在接受供电设备管理单位要令人申请后，及时与列车调度员办理接触网停电及行车限制有关事宜。作业结束送电时，供电调度员确认具备送电条件后，办理送电手续。<br>3.电力机车运行途中确需登上机车顶部作业时，由司机向列车调度员提出申请，列车调度员与供电调度员办理停电手续，确认接触网设备已停电后，列车调度员方可发布准许登顶作业的调度命令；司机接到准许登顶作业的调度命令后，进行验电并装设接地线后，方可登顶作业；作业完毕，司机拆除接地线后向列车调度员汇报；列车调度员与供电调度员办理送电手续。<br>4.事故救援需接触网停电配合的，供电设备管理单位现场负责人根据事故救援指挥人的要求派人向供电调度员办理停送电手续，并采取安全措施。<br>5.配合施工作业接触网停电时，需停电配合的施工主体单位与供电设备管理单位办理停电签认手续后方可开工。施工结束，该施工主体单位与供电设备管理单位办理送电签认手续后，供电设备管理单位方可向供电调度员申请销令并在行车室销记。<br>6.图定天窗时间内进行的牵引变电所内变电设备检修、试验需接触网设备停电时，由供电设备管理单位向供电调度提出申请，供电调度安排。"
             }
         ]
     },
@@ -2323,6 +2955,174 @@
                 "czr": "车站值班员",
                 "fj": "66#道岔分动外锁闭"
             }
+        ],
+        "4": [
+            {
+                "bds": "神池南",
+                "gdfw": "神池南--南坡底（不含）上下行\n神池南--卧厂（不含）上下行\n神池南--朔西（不含\n神池南--宁武西（含）上、下行",
+                "qjs": "神池南--南坡底",
+                "glb1": "神朔K214+825",
+                "qjx": "神池南--南坡底",
+                "glb2": "神朔K215+720"
+            },
+            {
+                "bds": "神池南",
+                "gdfw": "神池南--南坡底（不含）上下行\n神池南--卧厂（不含）上下行\n神池南--朔西（不含\n神池南--宁武西（含）上、下行",
+                "qjs": "神池南--卧厂",
+                "glb1": "准池K179+296",
+                "qjx": "神池南--卧厂",
+                "glb2": "准池K179+308"
+            },
+            {
+                "bds": "神池南",
+                "gdfw": "神池南--南坡底（不含）上下行\n神池南--卧厂（不含）上下行\n神池南--朔西（不含\n神池南--宁武西（含）上、下行",
+                "qjs": "神池南--朔西",
+                "glb1": "神朔K222+850",
+                "qjx": "",
+                "glb2": ""
+            },
+            {
+                "bds": "龙宫",
+                "gdfw": "宁武西（不含）--龙宫（含）--北大牛（不含）上、下行",
+                "qjs": "宁武西--龙宫",
+                "glb1": "K17+040",
+                "qjx": "宁武西--龙宫",
+                "glb2": "K17+037"
+            },
+            {
+                "bds": "龙宫",
+                "gdfw": "宁武西（不含）--龙宫（含）--北大牛（不含）上、下行",
+                "qjs": "宁武西--龙宫",
+                "glb1": "K40+352",
+                "qjx": "宁武西--龙宫",
+                "glb2": "K40+351"
+            },
+            {
+                "bds": "龙宫",
+                "gdfw": "宁武西（不含）--龙宫（含）--北大牛（不含）上、下行",
+                "qjs": "龙宫--北大牛",
+                "glb1": "K64+200",
+                "qjx": "龙宫--北大牛",
+                "glb2": "K64+203"
+            },
+            {
+                "bds": "原平南",
+                "gdfw": "北大牛（含）--原平南（含）--回凤（不含）上、下行",
+                "qjs": "原平南--回凤",
+                "glb1": "K86+177",
+                "qjx": "原平南--回凤",
+                "glb2": "K86+152"
+            },
+            {
+                "bds": "原平南",
+                "gdfw": "北大牛（含）--原平南（含）--回凤（不含）上、下行",
+                "qjs": "原平南--回凤",
+                "glb1": "K107+210",
+                "qjx": "原平南--回凤",
+                "glb2": "K107+195"
+            },
+            {
+                "bds": "东冶",
+                "gdfw": "回凤（含）--东冶（含）--南湾（含）上、下行",
+                "qjs": "回凤--东冶",
+                "glb1": "K129+745",
+                "qjx": "回凤--东冶",
+                "glb2": "K129+745"
+            },
+            {
+                "bds": "滴流磴",
+                "gdfw": "南湾（不含）--滴流磴（含）--猴刎（不含）上、下行",
+                "qjs": "南湾--滴流磴",
+                "glb1": "K140+227.5",
+                "qjx": "南湾--滴流磴",
+                "glb2": "K140+242.8"
+            },
+            {
+                "bds": "滴流磴",
+                "gdfw": "南湾（不含）--滴流磴（含）--猴刎（不含）上、下行",
+                "qjs": "南湾--滴流磴",
+                "glb1": "K163+847",
+                "qjx": "南湾--滴流磴",
+                "glb2": "K163+847"
+            },
+            {
+                "bds": "滴流磴",
+                "gdfw": "南湾（不含）--滴流磴（含）--猴刎（不含）上、下行",
+                "qjs": "滴流磴--猴刎",
+                "glb1": "K184+180",
+                "qjx": "滴流磴--猴刎",
+                "glb2": "K184+185"
+            },
+            {
+                "bds": "小觉",
+                "gdfw": "猴刎（含）--小觉（含）--古月（不含）上、下行",
+                "qjs": "猴刎--小觉",
+                "glb1": "K199+292",
+                "qjx": "猴刎--小觉",
+                "glb2": "K199+303"
+            },
+            {
+                "bds": "小觉",
+                "gdfw": "猴刎（含）--小觉（含）--古月（不含）上、下行",
+                "qjs": "小觉--古月",
+                "glb1": "K218+221",
+                "qjx": "小觉--古月",
+                "glb2": "K218+213"
+            },
+            {
+                "bds": "西柏坡",
+                "gdfw": "古月（含）--西柏坡（含）--三汲（含）上、下行",
+                "qjs": "古月--西柏坡",
+                "glb1": "K238+0250",
+                "qjx": "古月--西柏坡",
+                "glb2": "K238+250"
+            },
+            {
+                "bds": "西柏坡",
+                "gdfw": "古月（含）--西柏坡（含）--三汲（含）上、下行",
+                "qjs": "三汲--灵寿",
+                "glb1": "K258+133",
+                "qjx": "三汲--灵寿",
+                "glb2": "K258+116"
+            }
+        ],
+        "5": [
+            {
+                "qd": "西柏坡-神池南间下行",
+                "jclx": "SS4 型电力机车",
+                "zdqyzl": "2450",
+                "bz": "速度70km/h"
+            },
+            {
+                "qd": "西柏坡-神池南间下行",
+                "jclx": "交流机车",
+                "zdqyzl": "3432",
+                "bz": "速度70km/h"
+            },
+            {
+                "qd": "神池南-西柏坡间上行",
+                "jclx": "内燃机车",
+                "zdqyzl": "2180",
+                "bz": ""
+            },
+            {
+                "qd": "神池南-西柏坡间下行",
+                "jclx": "内燃机车",
+                "zdqyzl": "940",
+                "bz": ""
+            },
+            {
+                "qd": "肃宁北-黄骅港间上行",
+                "jclx": "内燃机车",
+                "zdqyzl": "5676",
+                "bz": ""
+            },
+            {
+                "qd": "肃宁北-黄骅港间下行",
+                "jclx": "内燃机车",
+                "zdqyzl": "5676",
+                "bz": ""
+            }
         ]
     },
     "sjComlun": {
@@ -2511,6 +3311,56 @@
                 "prop": "fj",
                 "width": 170
             }
+        ],
+        "4": [
+            {
+                "label": "变电所",
+                "prop": "bds",
+                "width": 100
+            },
+            {
+                "label": "供电范围",
+                "prop": "gdfw",
+                "width": 400
+            },
+            {
+                "label": "区间(上行)(电分相位置)",
+                "prop": "qjs",
+                "width": 180
+            },
+            {
+                "label": "公里标",
+                "prop": "glb1",
+                "width": 180
+            },
+            {
+                "label": "区间(下行)(电分相位置)",
+                "prop": "qjx",
+                "width": 180
+            },
+            {
+                "label": "公里标(电分相位置)",
+                "prop": "glb2",
+                "width": 180
+            }
+        ],
+        "5": [
+            {
+                "label": "区段",
+                "prop": "qd"
+            },
+            {
+                "label": "机车类型",
+                "prop": "jclx"
+            },
+            {
+                "label": "最大牵引质量(吨)",
+                "prop": "zdqyzl"
+            },
+            {
+                "label": "备注",
+                "prop": "bz"
+            }
         ]
     },
     "sjTypeList": {
@@ -2526,6 +3376,14 @@
             {
                 "label": "道岔",
                 "value": 3
+            },
+            {
+                "label": "变电所",
+                "value": 4
+            },
+            {
+                "label": "抱闸",
+                "value": 5
             }
         ],
         "2": [
@@ -2542,5 +3400,21 @@
                 "value": 3
             }
         ]
+    },
+    "fuzhuxian": {
+        "4": [
+                [
+                    {"x": 1120, "y": 1680},
+                    {"x": 1280, "y": 1680},
+                    {"x": 1280, "y": 1640},
+                    {"x": 1560, "y": 1640}
+                ],
+                [
+                    {"x": 2440, "y": 2070},
+                    {"x": 2240, "y": 2070},
+                    {"x": 2240, "y": 1850},
+                    {"x": 2000, "y": 1850}
+                ]
+            ]
     }
 }

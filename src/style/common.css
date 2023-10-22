@@ -13,6 +13,9 @@
         background-color: #165DFF;
         box-shadow: none;
         color: white;
+        .el-input__inner {
+            color: #fff;
+        }
         .el-icon {
             color: white;
         }
